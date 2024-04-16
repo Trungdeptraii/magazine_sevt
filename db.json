@@ -1,0 +1,392 @@
+{
+    "point": [
+      {
+        "name": "Charge",
+        "point": "LM550",
+        "stt": 0,
+        "id": "zNDIL",
+        "key": "zNDIL1"
+      },
+      {
+        "name": "Lấy nhựa 1",
+        "point": "LM150",
+        "stt": 0,
+        "id": "bxTTz",
+        "key": "bxTTz1"
+      },
+      {
+        "name": "Lấy nhựa 2",
+        "point": "LM151",
+        "stt": 0,
+        "id": "CeSbA",
+        "key": "CeSbA1"
+      },
+      {
+        "name": "LM220 he",
+        "point": "LM220",
+        "stt": 0,
+        "key": "tIqI0",
+        "id": "tIqI01"
+      },
+      {
+        "name": "LM666",
+        "point": "LM666",
+        "stt": 0,
+        "key": "dBhT0",
+        "id": "dBhT01"
+      },
+      {
+        "name": "LM94",
+        "point": "LM94",
+        "stt": 0,
+        "key": "FFY2C",
+        "id": "FFY2C1"
+      },
+      {
+        "name": "Máy D1",
+        "point": "LM91",
+        "stt": 0,
+        "id": "V7B1H",
+        "key": "V7B1H1"
+      },
+      {
+        "name": "Chờ Khuôn",
+        "point": "LM350",
+        "stt": 0,
+        "id": "SfMTK",
+        "key": "SfMTK1"
+      },
+      {
+        "name": "Thang máy",
+        "point": "LM9001",
+        "stt": 0,
+        "id": "QM0Zf",
+        "key": "QM0Zf1"
+      }
+    ],
+    "jig_get_45": [
+      {
+        "name": "get_45",
+        "triggerName": "  sdfsdf       sdfsdf",
+        "openGripper": 1,
+        "closeGripper": 2,
+        "openSpace": 3,
+        "m_delta_x": 3,
+        "m_delta_y": 45,
+        "m_delta_h": 5,
+        "r_delta_x": 4,
+        "r_delta_y": 5,
+        "r_delta_h": 6,
+        "slugName": "get_45",
+        "slugTrigger": "sdfsdfsdfsdf",
+        "id": "xN2t5",
+        "key": "xN2t51",
+        "model": "jig_get_45"
+      },
+      {
+        "name": "ádasd",
+        "triggerName": "1",
+        "openGripper": 2,
+        "closeGripper": 3,
+        "openSpace": 5,
+        "m_delta_x": 3,
+        "m_delta_y": 4,
+        "m_delta_h": 3,
+        "r_delta_x": 2,
+        "r_delta_y": 3,
+        "r_delta_h": 4,
+        "slugName": "ádasd",
+        "slugTrigger": "1",
+        "id": "SMZLR",
+        "key": "SMZLR1",
+        "model": "jig_get_45"
+      },
+      {
+        "name": "asd",
+        "triggerName": "ada",
+        "openGripper": 1,
+        "closeGripper": 2,
+        "openSpace": 3,
+        "m_delta_x": 4,
+        "m_delta_y": 5,
+        "m_delta_h": 6,
+        "r_delta_x": 6,
+        "r_delta_y": 6,
+        "r_delta_h": 6,
+        "slugName": "asd",
+        "slugTrigger": "ada",
+        "id": "0HRd3",
+        "key": "0HRd31",
+        "model": "jig_get_45"
+      }
+    ],
+    "jig_get_46": [],
+    "jig_return_45": [
+      {
+        "name": "sĐA",
+        "triggerName": "sdfs",
+        "openGripper": 1,
+        "closeGripper": 2,
+        "openSpace": 45,
+        "m_delta_x": 5,
+        "m_delta_y": 67,
+        "m_delta_h": 1,
+        "r_delta_x": 6,
+        "r_delta_y": 1,
+        "r_delta_h": 1,
+        "slugName": "sđa",
+        "slugTrigger": "sdfs",
+        "id": "ND11E",
+        "key": "ND11E1",
+        "model": "jig_return_45"
+      }
+    ],
+    "jig_return_46": [
+      {
+        "name": "dfsdf",
+        "triggerName": "sdfs",
+        "openGripper": 1,
+        "closeGripper": 2,
+        "openSpace": 3,
+        "m_delta_x": 4,
+        "m_delta_y": 5,
+        "m_delta_h": 6,
+        "r_delta_x": 4,
+        "r_delta_y": 5,
+        "r_delta_h": 5,
+        "slugName": "dfsdf",
+        "slugTrigger": "sdfs",
+        "id": "qYLHl",
+        "key": "qYLHl1",
+        "model": "jig_return_46"
+      }
+    ],
+    "magazine_load_45": [
+      {
+        "floor2_height": 0,
+        "floor1_height": 0,
+        "name": "adasd",
+        "floor1_conveyor": "cw",
+        "floor2_conveyor": "ccw",
+        "slug": "adasd",
+        "id": "IAiFH",
+        "key": "IAiFH1",
+        "model": "magazine_load_45"
+      },
+      {
+        "floor2_height": 0,
+        "floor1_height": 0,
+        "name": "ádasds",
+        "floor1_conveyor": "ccw",
+        "floor2_conveyor": "cw",
+        "slug": "ádasds",
+        "id": "Pfbqz",
+        "key": "Pfbqz1",
+        "model": "magazine_load_45"
+      },
+      {
+        "name": "3",
+        "floor1_height": 1,
+        "floor1_conveyor": "ccw",
+        "floor2_height": 2,
+        "floor2_conveyor": "ccw",
+        "slug": "3",
+        "id": "9CUuF",
+        "key": "9CUuF1",
+        "model": "magazine_load_45"
+      }
+    ],
+    "magazine_load_46": [],
+    "magazine_unload_45": [],
+    "magazine_unload_46": [],
+    "magazine_setting": [
+      {
+        "id": "jig_get_45",
+        "modelId": "0HRd3",
+        "point": "LM150",
+        "namePoint": "Lấy nhựa 1"
+      },
+      {
+        "id": "jig_get_46",
+        "modelId": "8MiBJ",
+        "point": "",
+        "namePoint": ""
+      },
+      {
+        "id": "jig_return_45",
+        "modelId": "ND11E",
+        "point": "LM151",
+        "namePoint": "Lấy nhựa 2"
+      },
+      {
+        "id": "jig_return_46",
+        "modelId": "qYLHl",
+        "point": "",
+        "namePoint": ""
+      },
+      {
+        "id": "magazine_load_45",
+        "modelId": "Pfbqz",
+        "point": "LM220",
+        "namePoint": "LM220 he"
+      },
+      {
+        "id": "magazine_load_46",
+        "modelId": "454",
+        "point": "",
+        "namePoint": ""
+      },
+      {
+        "id": "magazine_unload_45",
+        "modelId": "4545",
+        "point": "",
+        "namePoint": ""
+      },
+      {
+        "id": "magazine_unload_46",
+        "modelId": "JvZat",
+        "point": "",
+        "namePoint": ""
+      }
+    ],
+    "magazine": {
+      "line45": {
+        "jig": {
+          "load": [
+            {
+              "triggerName": "ada",
+              "openGripper": 1,
+              "closeGripper": 2,
+              "openSpace": 3,
+              "m_delta_x": 4,
+              "m_delta_y": 5,
+              "m_delta_h": 6,
+              "r_delta_x": 6,
+              "r_delta_y": 6,
+              "r_delta_h": 6,
+              "name": "asd"
+            }
+          ],
+          "unload": [
+            {
+              "triggerName": "sdfs",
+              "openGripper": 1,
+              "closeGripper": 2,
+              "openSpace": 45,
+              "m_delta_x": 5,
+              "m_delta_y": 67,
+              "m_delta_h": 1,
+              "r_delta_x": 6,
+              "r_delta_y": 1,
+              "r_delta_h": 1,
+              "name": "sĐA"
+            }
+          ]
+        },
+        "magazine": {
+          "load": [
+            {
+              "floor1_height": 0,
+              "floor1_conveyor": "ccw",
+              "floor2_height": 0,
+              "floor2_conveyor": "cw",
+              "name": "ádasds"
+            }
+          ],
+          "unload": []
+        }
+      },
+      "line46": {
+        "jig": {
+          "load": [],
+          "unload": [
+            {
+              "triggerName": "sdfs",
+              "openGripper": 1,
+              "closeGripper": 2,
+              "openSpace": 3,
+              "m_delta_x": 4,
+              "m_delta_y": 5,
+              "m_delta_h": 6,
+              "r_delta_x": 4,
+              "r_delta_y": 5,
+              "r_delta_h": 5,
+              "name": "dfsdf"
+            }
+          ]
+        },
+        "magazine": {
+          "load": [],
+          "unload": []
+        }
+      }
+    },
+    "relocation": [
+      {
+        "name": "Điểm Lấy Nhựa 2",
+        "x": -29.866,
+        "y": -50.972,
+        "angle": -93.787,
+        "radius": 1,
+        "id": "xhTEb",
+        "key": "xhTEb2"
+      },
+      {
+        "name": "Điểm sạc",
+        "x": 0.248,
+        "y": 0.03,
+        "angle": -179.284,
+        "radius": 1,
+        "id": "DA1Gc",
+        "key": "DA1Gc2"
+      },
+      {
+        "name": "sdfsdfsdf",
+        "x": 23.3601,
+        "y": -35.2821,
+        "angle": 89.38,
+        "radius": 2,
+        "id": "OsryO",
+        "key": "OsryO2"
+      },
+      {
+        "name": "sdfds",
+        "x": 23.3601,
+        "y": -35.2821,
+        "angle": 89.38,
+        "radius": 2,
+        "id": "emYH6",
+        "key": "emYH62"
+      },
+      {
+        "name": "ádasdsad",
+        "x": 23.3601,
+        "y": -35.2821,
+        "angle": 89.38,
+        "radius": 2,
+        "id": "yHiP3",
+        "key": "yHiP32"
+      },
+      {
+        "name": "ádax",
+        "x": 23.3601,
+        "y": -35.2821,
+        "angle": 89.38,
+        "radius": 2,
+        "id": "6TP4p",
+        "key": "6TP4p2"
+      },
+      {
+        "name": "ưdad",
+        "x": 23.3601,
+        "y": -35.2821,
+        "angle": 89.38,
+        "radius": 2,
+        "id": "BJHq2",
+        "key": "BJHq22"
+      }
+    ],
+    "log": [
+      
+    ]
+  }
