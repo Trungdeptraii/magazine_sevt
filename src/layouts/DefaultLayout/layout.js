@@ -69,13 +69,7 @@ export const arrFieldHeaderStatus = [
         label: 'Độ chính xác: ',
         field: 'confidence',
         dv: "conf"
-    },
-    {
-        icon: FaLocationCrosshairs,
-        label: 'Bản đồ: ',
-        field: 'current_map',
-    },
-    
+    } 
 ]
 export const arrFieldHeaderStatusBoolean = [
     {

@@ -23,9 +23,8 @@ function getItem(label, key, icon, children, type) {
     getItem('Vị trí', 'Relocation', <FaLocationCrosshairs />),
     getItem('Tín hiệu', 'io', <BsCapsulePill  />),
     getItem('Di chuyển', 'monitor', <FaRoute />),
-    getItem('Nhiệm vụ', 'task_move', <BsListStars />),
-    getItem('Thiết lập', 'config', <AiOutlineAppstoreAdd  />),
-    getItem('Cấu hình', 'setting', <AiFillSetting />)
+    getItem('Cấu hình', 'config', <AiOutlineAppstoreAdd  />),
+    getItem('Cài đặt', 'setting', <AiFillSetting />)
     // getItem('Điều khiển', 'About', <DesktopOutlined />),
     // getItem('Theo dõi', 'Product', <ContainerOutlined />),
     // getItem('Feature', 'sub1', <MailOutlined />, [

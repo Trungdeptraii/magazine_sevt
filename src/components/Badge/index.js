@@ -1,4 +1,4 @@
-import {styled} from "styled-components"
+import {keyframes, styled} from "styled-components"
 import { Robot, hostJS, portJS } from "../../assets/js/avaribale"
 import { FetchAPI } from "../../utils/api"
 import { toast } from "react-toastify"
@@ -19,18 +19,23 @@ export const BadgeItem = styled.div`
     color: black;
     border-radius: 5px;
     position: relative;
+    overflow-y: auto;
+
 `
 export const BadgeTitle = styled.div`
     font-size: 20px;
     font-weight: 700;
     text-align: center;
-    padding-top: 5px
+    padding-top: 5px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
 `
 export const BadgeMain = styled.div`
-    font-size: 40px;
+    font-size: 30px;
     font-weight: 700;
     height: calc(100% - 35px);
-    padding: 10px 0;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     row-gap: 10px;
@@ -106,39 +111,94 @@ export const ShowJigHomeMagazine = styled.div`
     gap: 8px;
 `
 export const InfoJig = styled.div`
-    width: 60%;
+    width: 66%;
     height: 100%;
     border-radius: 5px;
     box-shadow: 0 0 2px 2px #f5dede;
+    padding-left: 20px;
 `
 export const InfoMagazine = styled.div`
     flex: 1;
     height: 100%;
     border-radius: 5px;
     box-shadow: 0 0 2px 2px #f5dede;
+    padding-left: 20px;
+    overflow: hidden;
+`
+const ring = keyframes`
+0% { transform: rotate(0); }
+  1% { transform: rotate(30deg); }
+  3% { transform: rotate(-28deg); }
+  5% { transform: rotate(34deg); }
+  7% { transform: rotate(-32deg); }
+  9% { transform: rotate(30deg); }
+  11% { transform: rotate(-28deg); }
+  13% { transform: rotate(26deg); }
+  15% { transform: rotate(-24deg); }
+  17% { transform: rotate(22deg); }
+  19% { transform: rotate(-20deg); }
+  21% { transform: rotate(18deg); }
+  23% { transform: rotate(-16deg); }
+  25% { transform: rotate(14deg); }
+  27% { transform: rotate(-12deg); }
+  29% { transform: rotate(10deg); }
+  31% { transform: rotate(-8deg); }
+  33% { transform: rotate(6deg); }
+  35% { transform: rotate(-4deg); }
+  37% { transform: rotate(2deg); }
+  39% { transform: rotate(-1deg); }
+  41% { transform: rotate(1deg); }
+  43% { transform: rotate(0); }
+  100% { transform: rotate(0); }
 `
 export const TitleInfoMagazine = styled.div`
-    padding-left: 30px;
     font-size: 20px;
     font-weight: 700;
     padding-top: 5px;
+    display: flex;
+    align-items: center;
+    & > svg{
+        margin-right: 5px;
+        color: darkslateblue;
+    }
+    & > .noti{
+        animation: ${ring} 4s linear infinite
+    }
 `
 export const ContentInfoMagazine = styled.div`
     height: calc(100% - 35px);
     display: flex;
-    align-items: center;
-    justify-content: center;
     font-weight: 700;
-    font-size: 40px;
+    font-size: 30px;
     line-height: 35px;
+    flex-direction: column;
+    justify-content: space-evenly;
 `
+export const ContentInfoMagazineItem = styled.div`
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    & > svg {
+        color: grey;
+    }
+`
+export const ContentInfoMagazineItemTitle = styled.span`
+    margin-left: 5px;
+`
+export const ContentInfoMagazineItemValue = styled.span`
+    margin-left: 10px;
+`
+
 export const ContentInfoJig = styled.div`
     height: calc(100% - 35px);
     display: flex;
     align-items: center;
-    padding: 5px 10px;
     gap: 8px;
-    justify-content: center;
+    justify-content: space-evenly;
+    font-weight: 600;
+    font-size: 30px;
+    overflow-y: auto;
 `
 export const ContentInfoJigItem = styled.div`
     flex-basis: 33.33%;
@@ -147,6 +207,7 @@ export const ContentInfoJigItem = styled.div`
     border: 2px solid gainsboro;
     color: gainsboro;
     height: 100%;
+    padding-top: 5px;
 `
 export const InfoJigItemTitle = styled.div`
     font-size: 20px;
@@ -160,7 +221,8 @@ export const InfoJigItemIcon = styled.div`
     align-items: center;
     justify-content: center;
     svg{
-        font-size: 65px;
+        font-size: 45px;
+        margin-bottom: 5px;
         color: gainsboro;
     }
 `
@@ -181,3 +243,22 @@ export const handleFetchIdModel = async({method="GET", path="", dataSend={}, cb1
     cb1(obj)
   }
 } 
+
+export const senserON = {
+  parent: {
+    color: "black",
+    border: "2px solid green"
+  },
+  children: {
+    color: "green"
+  }
+}
+export const senserOFF = {
+  parent: {
+    border: "2px solid gainsboro",
+    color: "gainsboro"
+  },
+  children: {
+    color: "gainsboro"
+  }
+}

@@ -8,15 +8,26 @@ import { TitleField } from '../../../../assets/js/globalStyle';
 import { FetchAPI } from '../../../../utils/api';
 import {toast} from "react-toastify"
 
-const MagazineForm = ({editPoint, hidden, title, getData, pathFormMagazine}) => {
-  const [validate, setValidate] = useState({name: "", floor1_height: "", floor2_height: ""})
-  const [form, setForm] = useState(editPoint)
-  const handleCancelForm = ()=>{
-    hidden()
-  }
-  const handleChangeDirect = (value, floor)=>{
-      setForm({...form, [floor]: value})
-  }
+const MagazineForm = ({editPoint, hidden, title, getData}) => {
+    let [magazine, setMagazine] = useState("load")
+    let [line, setLine] = useState("45")
+    let [magazineLine, setMagazineLine] = useState("load_45")
+    let onChangeMagazine = (e)=>{
+        setMagazine(e.target.value)
+        setMagazineLine(`${e.target.value}_${line}`)
+    }
+    let onChangeLine = (e)=>{
+        setLine(e.target.value)
+        setMagazineLine(`${magazine}_${e.target.value}`)
+    }
+    const [validate, setValidate] = useState({name: "", floor1_height: "", floor2_height: ""})
+    const [form, setForm] = useState(editPoint)
+    const handleCancelForm = ()=>{
+      hidden()
+    }
+    const handleChangeDirect = (value, floor)=>{
+        setForm({...form, [floor]: value})
+    }
   return (
     <LayoutForm>
         <Form
@@ -39,18 +50,18 @@ const MagazineForm = ({editPoint, hidden, title, getData, pathFormMagazine}) => 
             padding: '0px 10px 5px 10px'
           }}
           onFinish={async()=>{
-            let checkButton, method="POST", path=`magazine_${pathFormMagazine}`;
+            let checkButton, method="POST", path=`magazine_${magazineLine}`;
             checkButton = title.startsWith('Tạo') ? 'Create' : 'Update';
             let modelSchema = object({
                 name: string().required("Bạn cần nhập tên option").test("checkunique", "Option đã tồn tại", async(value)=>{
                   let slug = value.split(" ").join("").toLowerCase();
                   if(checkButton == "Create"){
-                    let {type, data} = await FetchAPI({method: "GET",host: hostJS, port: portJS, path: `magazine_${pathFormMagazine}?slug=${slug}`})
+                    let {type, data} = await FetchAPI({method: "GET",host: hostJS, port: portJS, path: `magazine_${magazineLine}?slug=${slug}`})
                     if(type == "succees" && data.length){
                       return false
                     }
                   }else if(checkButton == "Update"){
-                    let {type, data} = await FetchAPI({method: "GET",host: hostJS, port: portJS, path: `magazine_${pathFormMagazine}`})
+                    let {type, data} = await FetchAPI({method: "GET",host: hostJS, port: portJS, path: `magazine_${magazineLine}`})
                     if(type == "succees"){
                       let result = data.filter((item)=>item.name.toLowerCase() != editPoint.name)
                       if(result.some((item)=>item.name.toLowerCase() == value.toLowerCase())){
@@ -153,6 +164,30 @@ const MagazineForm = ({editPoint, hidden, title, getData, pathFormMagazine}) => 
               }
             </>
           </Form.Item>
+          {
+            title.startsWith("Chỉnh") ? "" :
+            <Form.Item
+                label="Tùy chọn"
+                name="options"
+            >
+                <Space>
+                    <Radio.Group
+                        value={magazine}
+                        onChange={onChangeMagazine}
+                        >
+                        <Radio.Button style={{height: "50px", lineHeight: "50px", fontWeight: 600}} value="load">Load</Radio.Button>
+                        <Radio.Button style={{height: "50px", lineHeight: "50px", fontWeight: 600}} value="unload">UnLoad</Radio.Button>
+                    </Radio.Group>
+                    <Radio.Group
+                        value={line}
+                        onChange={onChangeLine}
+                        >
+                        <Radio.Button style={{height: "50px", lineHeight: "50px", fontWeight: 600}} value="45">Line 45</Radio.Button>
+                        <Radio.Button style={{height: "50px", lineHeight: "50px", fontWeight: 600}} value="46">Line 46</Radio.Button>
+                    </Radio.Group>
+                </Space>
+            </Form.Item> 
+          }
           <Form.Item label=" ">
             <>
               <Button type="primary" htmlType="submit" style={{backgroundColor: 'limegreen', minWidth: 100}} size='large'>

@@ -26,6 +26,8 @@ export const pathWareHouse = env.VITE_PATH_WARE_HOUSE
 export const pageSizePoint = 7
 export const pageSizeRelocation = 5
 
+export const isLogStatus = "disable"
+
 
 import logos from "./../images/logo.png"
 import esaGif from "./../images/esaGif.gif"

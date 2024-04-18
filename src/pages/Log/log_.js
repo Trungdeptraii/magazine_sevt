@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { hostJS, pathLogJS, portJS } from "../../assets/js/avaribale";
+import { hostJS, isLogStatus, pathLogJS, portJS } from "../../assets/js/avaribale";
 import { createId } from "../../utils/clientUtil";
 import { FetchAPI } from "../../utils/api";
 
@@ -73,27 +73,29 @@ export const data = [
 
 export const  writeLog = ({content="", current_station="", desc="Lỗi", id= "", method = "POST"})=>{
   let path = pathLogJS
-  try {
-    if(desc){
-      let {value} = logSelected.find((item)=>item.label === desc)
-      let data = {
-        content,
-        point: current_station,
-        desc: desc
+  if(isLogStatus == "enable"){
+    try {
+      if(desc){
+        let {value} = logSelected.find((item)=>item.label === desc)
+        let data = {
+          content,
+          point: current_station,
+          desc: desc
+        }
+        if(!id && method == "POST"){
+          data.id = createId(5)
+          data.key = data.id + "1"
+        }else if(id && method =="POST"){
+          data.id = id
+          data.key = data.id + "1"
+        }
+        data.timestamp = Date.now()
+        data.date = format(new Date(data.timestamp), "yyyy-MM-dd")
+        data.type = value ? value : ""
+        FetchAPI({method, host: hostJS, port: portJS, path, data})
       }
-      if(!id && method == "POST"){
-        data.id = createId(5)
-        data.key = data.id + "1"
-      }else if(id && method =="POST"){
-        data.id = id
-        data.key = data.id + "1"
-      }
-      data.timestamp = Date.now()
-      data.date = format(new Date(data.timestamp), "yyyy-MM-dd")
-      data.type = value ? value : ""
-      FetchAPI({method, host: hostJS, port: portJS, path, data})
+    } catch (error) {
+      console.log("error", error);
     }
-  } catch (error) {
-    console.log("error", error);
   }
 }

@@ -12,7 +12,6 @@ import GuestMiddleware from '../middlewares/GuestMiddleware'
 import PointMove from '../pages/Point/PointMove'
 import Relocation from '../pages/Relocation/Relocation'
 import GroupPoint from '../pages/GroupPoint/GroupPoint'
-import TaskMove from '../pages/TaskMove/TaskMove'
 import IO from '../pages/IO/IO'
 import Monitor from '../pages/Monitor/Monitor'
 import Log from '../pages/Log/Log'
@@ -27,7 +26,6 @@ export const publicRoutes = (
         <Route path='/point' element={<PointMove />}/>
         <Route path='/relocation' element={<Relocation />}/>
         <Route path='/group_point' element={<GroupPoint />}/>
-        <Route path='/task_move' element={<TaskMove />}/>
         <Route path='/io' element={<IO />}/>
         <Route path='/monitor' element={<Monitor />}/>
         <Route path='/config' element={<Config />}/>

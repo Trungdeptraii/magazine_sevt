@@ -170,7 +170,7 @@ const Setting = () => {
         namePoint?.jig_get_45?.point, namePoint?.jig_get_46?.point, namePoint?.jig_return_45?.point, namePoint?.jig_return_46?.point, namePoint?.magazine_load_45?.point, namePoint?.magazine_unload_45?.point, namePoint?.magazine_load_46?.point, namePoint?.magazine_unload_46?.point])
   return (
     <SettingContainer>
-        <TitleField>Thiết lập</TitleField>
+        <TitleField>Cài đặt</TitleField>
         <Tabs
             defaultActiveKey="0"
             centered

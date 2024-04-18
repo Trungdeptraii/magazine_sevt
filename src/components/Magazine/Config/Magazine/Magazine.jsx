@@ -146,8 +146,8 @@ const Magazine = () => {
                 value={magazine}
                 onChange={onChangeMagazine}
                 >
-                <Radio.Button style={{height: "40px", lineHeight: "40px", fontWeight: 600}} value="load">Load</Radio.Button>
-                <Radio.Button style={{height: "40px", lineHeight: "40px", fontWeight: 600}} value="unload">UnLoad</Radio.Button>
+                <Radio.Button style={{height: "40px", lineHeight: "40px", fontWeight: 600}} value="load">Load Magazine</Radio.Button>
+                <Radio.Button style={{height: "40px", lineHeight: "40px", fontWeight: 600}} value="unload">UnLoad Magazine</Radio.Button>
             </Radio.Group>
             <Radio.Group
                 value={line}
@@ -160,7 +160,7 @@ const Magazine = () => {
         </Space>
         <Table dataSource={dataTable} columns={columns} />
         {
-            showForm ? <MagazineForm  hidden={handleHiddenForm} editPoint={editPoint} title={title} getData={getMagazineLine}/> : ""
+            showForm ? <MagazineForm  hidden={handleHiddenForm} editPoint={editPoint} title={title} getData={getMagazineLine} pathFormMagazine={magazineLine}/> : ""
         }
     </div>
     

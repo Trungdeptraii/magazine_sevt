@@ -16,7 +16,7 @@ export const DivInput = styled.div`
         height: 40px;
         font-size: 16px;
     }
-    input[id="robotx"]:valid + span, input[id="machinex"]:valid + span, input[id="gripperOpen"]:valid + span{
+    input[id="robotx"]:valid + span, input[id="machinex"]:valid + span, input[id="gripperOpen"]:valid + span, input[id="gripperDoor"]:valid + span{
         visibility: visible;
         top: -18px;
         color: rgb(100 100 100);
@@ -24,7 +24,7 @@ export const DivInput = styled.div`
         border-radius: 5px 5px 0 0;
         background-color: white;
     }
-    input[id="roboty"]:valid + span, input[id="machiney"]:valid + span, input[id="gripperClose"]:valid + span{
+    input[id="roboty"]:valid + span, input[id="machiney"]:valid + span, input[id="gripperClose"]:valid + span, input[id="closeSpace1"]:valid + span{
         visibility: visible;
         top: -18px;
         color: rgb(100 100 100);
@@ -32,8 +32,8 @@ export const DivInput = styled.div`
         left: 165px;
         border-radius: 5px 5px 0 0;
         background-color: white;
-    }
-    input[id="roboth"]:valid + span, input[id="machineh"]:valid + span, input[id="gripperDoor"]:valid + span{
+    } //closeSpace
+    input[id="roboth"]:valid + span, input[id="machineh"]:valid + span, input[id="closeSpace2"]:valid + span{
         visibility: visible;
         top: -18px;
         color: rgb(100 100 100);
@@ -51,7 +51,7 @@ export const InputForm = styled.input`
     font-size: 18px;
     flex-basis: 32%;
     max-width: 32%;
-    background-color: white;
+    background-color: white !important;
     &:focus{
         border-color: #1677ff;
         box-shadow: 0 0 0 2px rgba(5, 145, 255, 0.1)
@@ -85,6 +85,8 @@ export const initialState = {
     openGripper:"",
     closeGripper:"",
     openSpace:"",
+    closeSpace1:"",
+    closeSpace2:"",
     m_delta_x:"",
     m_delta_y:"",
     m_delta_h:"",
@@ -97,6 +99,7 @@ export const iniitalValidate = {
     "name": "",
     "triggerName": "",
     "gripper": "",
+    "door": "",
     "machine": "",
     "robot": ""
 }

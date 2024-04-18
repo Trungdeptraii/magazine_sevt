@@ -1,11 +1,12 @@
 import React, {useState} from 'react'
-import { DivInput, LayoutForm } from './jig_'
-import { Button, Form, Input, Radio, Space, message } from 'antd';
+import { DivInput, InputForm, LayoutForm, SpanForm, iniitalValidate, initialState } from './jig_'
+import { Button, Form, Input, Radio, Space } from 'antd';
 import { hostJS, portJS } from '../../../../assets/js/avaribale';
 import { createId } from '../../../../utils/clientUtil';
 import { string, object } from 'yup';
 import { TitleField } from '../../../../assets/js/globalStyle';
 import { FetchAPI } from '../../../../utils/api';
+import {toast} from "react-toastify"
 
 const JigForm = ({hidden, editPoint, title, getData}) => {
     let [jig, setJig] = useState("get")
@@ -19,7 +20,7 @@ const JigForm = ({hidden, editPoint, title, getData}) => {
       setLine(e.target.value)
       setJigLine(`${jig}_${e.target.value}`)
     }
-    const [validate, setValidate] = useState({name: '', x: '', y: ""})
+    const [validate, setValidate] = useState(iniitalValidate)
     const [form, setForm] = useState(editPoint)
     const handleCancelForm = ()=>{
       hidden()
@@ -49,10 +50,10 @@ const JigForm = ({hidden, editPoint, title, getData}) => {
             let checkButton, method="POST", path=`jig_${jigLine}`;
             checkButton = title.startsWith('Tạo') ? 'Create' : 'Update';
             let modelSchema = object({
-                name: string().required("Bạn cần nhập tên model").test("checkunique", "Model đã tồn tại", async(value)=>{
+                name: string().test("checkunique", "Model đã tồn tại", async(value)=>{
                   let slug = value.split(" ").join("").toLowerCase();
                   if(checkButton == "Create"){
-                    let {type, data} = await FetchAPI({method: "GET",host: hostJS, port: portJS, path: `jig_${jigLine}?slug=${slug}`})
+                    let {type, data} =  await FetchAPI({method: "GET",host: hostJS, port: portJS, path: `jig_${jigLine}?slugName=${slug}`})
                     if(type == "succees" && data.length){
                       return false
                     }
@@ -67,19 +68,68 @@ const JigForm = ({hidden, editPoint, title, getData}) => {
                   }
                   return true
                 }),
-                x: string().required("Bạn cần nhập tọa độ x").test("checkunique", "Tọa độ x phải là dạng số", (value)=>{
+                triggerName: string().test("checkunique", "Trigger name đã tồn tại", async(value)=>{
+                  let slug = value.split(" ").join("").toLowerCase();
+                  if(checkButton == "Create"){
+                    let {type, data} = await FetchAPI({method: "GET",host: hostJS, port: portJS, path: `jig_${jigLine}?slugTrigger=${slug}`})
+                    if(type == "succees" && data.length){
+                      return false
+                    }
+                  }else if(checkButton == "Update"){
+                    let {type, data} = await FetchAPI({method: "GET",host: hostJS, port: portJS, path: `jig_${jigLine}`})
+                    if(type == "succees"){
+                      let result = data.filter((item)=>item.triggerName.toLowerCase() != editPoint.triggerName)
+                      if(result.some((item)=>item.triggerName.toLowerCase() == value.toLowerCase())){
+                        return false
+                      }
+                    }
+                  }
+                  return true
+                }),
+                openGripper: string().test("checkunique", true, (value)=>{
                   return Number(value) ? true : false
                 }),
-                y: string().required("Bạn cần nhập tọa độ y").test("checkunique", "Tọa độ y phải là dạng số", (value)=>{
+                closeGripper: string().test("checkunique", "true", (value)=>{
                   return Number(value) ? true : false
-              }),
+                }),
+                openSpace: string().test("checkunique", "true", (value)=>{
+                  return Number(value) ? true : false
+                }),
+                m_delta_x: string().test("checkunique", "true", (value)=>{
+                  return Number(value) ? true : false
+                }),
+                m_delta_y: string().test("checkunique", "true", (value)=>{
+                  return Number(value) ? true : false
+                }),
+                m_delta_h: string().test("checkunique", "true", (value)=>{
+                  return Number(value) ? true : false
+                }),
+                r_delta_x: string().test("checkunique", "true", (value)=>{
+                  return Number(value) ? true : false
+                }),
+                r_delta_y: string().test("checkunique", "true", (value)=>{
+                  return Number(value) ? true : false
+                }),
+                r_delta_h: string().test("checkunique", "true", (value)=>{
+                  return Number(value) ? true : false
+                }),
             })
             try {
-                let result = await modelSchema.validate(form, {abortEarly: false})
-                result.x = Number(result.x)
-                result.y = Number(result.y)
-                if(checkButton == "Create"){
-                  result.slug = result.name.split(" ").join("").toLowerCase();
+              let result = await modelSchema.validate(form, {abortEarly: false})
+              if(checkButton == "Create"){
+                  result.openGripper = Number(result.openGripper)
+                  result.closeGripper = Number(result.closeGripper)
+                  result.openSpace = Number(result.openSpace)
+                  result.m_delta_x = Number(result.m_delta_x)
+                  result.m_delta_y = Number(result.m_delta_y)
+                  result.m_delta_h = Number(result.m_delta_h)
+                  result.r_delta_x = Number(result.r_delta_x)
+                  result.r_delta_y = Number(result.r_delta_y)
+                  result.r_delta_h = Number(result.r_delta_h)
+                  result.name = result.name.trim()
+                  result.triggerName = result.triggerName.trim()
+                  result.slugName = result.name.trim().split(" ").join("").toLowerCase();
+                  result.slugTrigger = result.triggerName.trim().split(" ").join("").toLowerCase();
                   result.id = createId(5)
                   result.key = result.id + 1
                   result.model = path
@@ -87,23 +137,20 @@ const JigForm = ({hidden, editPoint, title, getData}) => {
                   method= "PATCH",
                   path = path + `/${editPoint.id}`
                 }
-                console.log(method);
                 let {type} = await FetchAPI({method, host: hostJS, port: portJS, path, data: result})
-
                 if(type == "succees"){
-                  setForm({name: '', x: '', y: ""})
-                  message.success(`Đã ${checkButton == "Create" ? "tạo" : "cập nhật"} thành công ${result.name}`)
+                  setForm(initialState)
+                  toast.success(`Đã ${checkButton == "Create" ? "tạo" : "cập nhật"} thành công ${result.name}`)
                   if(checkButton == "Update"){
                     hidden()
                   }
                   getData()
                 }else if(type == "fail"){
-                  message.warning("Dữ liệu không đúng hãy kiểm tra lại")
+                  toast.warning("Dữ liệu không đúng hãy kiểm tra lại")
                 }else if(type == "error"){
-                  message.error(`${checkButton == "Create" ? "Tạo" : "Cập nhật"} ${result.name} thất bại, không có tín hiệu từ server`)
+                  toast.error(`${checkButton == "Create" ? "Tạo" : "Cập nhật"} ${result.name} thất bại, không có tín hiệu từ server`)
                 }
             } catch (error) {
-              console.log(error);
                 if(error?.inner?.length){
                   let resultError = []
                   resultError = error.inner.map((item)=>{return {[item.path]: item.message}})
@@ -112,7 +159,14 @@ const JigForm = ({hidden, editPoint, title, getData}) => {
                     resultError.forEach((item)=>{
                       result = {...result,...item}
                     })
-                    setValidate({...validate, ...result})
+                    let data = {
+                      name: result.name,
+                      triggerName: result.triggerName,
+                      gripper: result.openGripper || result.closeGripper || result.openSpace? `Giá trị ${result.openGripper ? "MỞ": ""} ${result.closeGripper ? ", ĐÓNG": ""} ${result.openSpace ? ", CỬA": ""} phải là dạng số`: "",
+                      machine: result.m_delta_x|| result.m_delta_y|| result.m_delta_h? `Giá trị ${result.m_delta_x ? "X": ""} ${result.m_delta_y ? ", Y": ""} ${result.m_delta_h ? ", H": ""} phải là dạng số`: "",
+                      robot: result.r_delta_x || result.r_delta_y || result.r_delta_h ? `Giá trị ${result.r_delta_x ? "X": ""} ${result.r_delta_y ? ", Y": ""} ${result.r_delta_h ? ", H": ""} phải là dạng số` : "",
+                    }
+                    setValidate({...validate, ...data})
                   }
                 }
             }
@@ -125,8 +179,8 @@ const JigForm = ({hidden, editPoint, title, getData}) => {
           >
             <>
               <DivInput>
-                <Input style={{flex: 1, height: 40, fontSize: 16}} value={form.name} name='name' onChange={(e)=>{setForm({...form, [e.target.name]: e.target.value})}} onClick={(e)=>{setValidate({...validate,[e.target.name]: ''})}} placeholder='Nhập tên model muốn tạo'></Input>
-                <Button type='primary' onClick={()=>{setForm({...form, name: ''})}} style={{backgroundColor: 'orange'}}>Clear</Button>
+                <Input style={{flex: 1, height: 40, fontSize: 16}} required value={form.name} name='name' onChange={(e)=>{setForm({...form, [e.target.name]: e.target.value})}} onClick={(e)=>{setValidate({...validate,[e.target.name]: ''})}} placeholder='Nhập tên model muốn tạo'></Input>
+                <Button type='primary' onClick={()=>{setForm({...form, name: ''})}} style={{backgroundColor: 'orange', minWidth: 80}}>Xóa</Button>
               </DivInput>
               {
                 validate.name ? <span style={{color: 'red', fontSize: '14px'}}>{validate.name}</span> : ''
@@ -139,39 +193,68 @@ const JigForm = ({hidden, editPoint, title, getData}) => {
           >
             <>
               <DivInput>
-                <Input style={{flex: 1}} value={form.x} name='x' onChange={(e)=>{setForm({...form, [e.target.name]: e.target.value})}} onClick={(e)=>{setValidate({...validate,[e.target.name]: ''})}} placeholder='Nhập trigger name'></Input>
-                <Button type='primary' onClick={()=>{setForm({...form, x: ''})}} style={{backgroundColor: 'orange'}}>Clear</Button>
+                <Input style={{flex: 1}} value={form.triggerName} name='triggerName' required onChange={(e)=>{setForm({...form, [e.target.name]: e.target.value})}} onClick={(e)=>{setValidate({...validate,[e.target.name]: ''})}} placeholder='Nhập trigger name'></Input>
+                <Button type='primary' onClick={()=>{setForm({...form, triggerName: ''})}} style={{backgroundColor: 'orange', minWidth: 80}}>Xóa</Button>
               </DivInput>
               {
-                validate.x ? <span style={{color: 'red', fontSize: '14px'}}>{validate.x}</span> : ''
+                validate.triggerName ? <span style={{color: 'red', fontSize: '14px'}}>{validate.triggerName}</span> : ''
               }
             </>
           </Form.Item>
           <Form.Item
-            label="Tọa độ X"
-            name="point"
+            label="Gripper"
+            name="gripper"
+            className='magazine_gripper'
           >
             <>
               <DivInput>
-                <Input style={{flex: 1}} value={form.x} name='x' onChange={(e)=>{setForm({...form, [e.target.name]: e.target.value})}} onClick={(e)=>{setValidate({...validate,[e.target.name]: ''})}} placeholder='Nhập tọa độ x'></Input>
-                <Button type='primary' onClick={()=>{setForm({...form, x: ''})}} style={{backgroundColor: 'orange'}}>Clear</Button>
+                <InputForm value={form.openGripper} type='text' placeholder='Mở' required id='gripperOpen' name='openGripper' onChange={(e)=>{setForm({...form, [e.target.name]: e.target.value})}} onClick={(e)=>{setValidate({...validate,["gripper"]: ''})}}/>
+                <SpanForm>Mở</SpanForm>
+                <InputForm value={form.closeGripper} type='text' placeholder='Đóng' required id='gripperClose' name='closeGripper' onChange={(e)=>{setForm({...form, [e.target.name]: e.target.value})}} onClick={(e)=>{setValidate({...validate,["gripper"]: ''})}}/>
+                <SpanForm>Đóng</SpanForm>
+                <InputForm value={form.openSpace} type='text' placeholder='Cửa' required id='gripperDoor' name='openSpace' onChange={(e)=>{setForm({...form, [e.target.name]: e.target.value})}} onClick={(e)=>{setValidate({...validate,["gripper"]: ''})}}/>
+                <SpanForm>Cửa</SpanForm>
               </DivInput>
               {
-                validate.x ? <span style={{color: 'red', fontSize: '14px'}}>{validate.x}</span> : ''
+                validate.gripper ? <span style={{color: 'red', fontSize: '14px'}}>{validate.gripper}</span> : ''
               }
             </>
           </Form.Item>
           <Form.Item
-            label="Tọa độ Y"
-            name="point"
+            label="Máy"
+            name="machine"
+            className="magazine_machine"
           >
             <>
               <DivInput>
-                <Input style={{flex: 1}} value={form.y} name='y' onChange={(e)=>{setForm({...form, [e.target.name]: e.target.value})}} onClick={(e)=>{setValidate({...validate,[e.target.name]: ''})}} placeholder='Nhập tọa độ y'></Input>
-                <Button type='primary' onClick={()=>{setForm({...form, y: ''})}} style={{backgroundColor: 'orange'}}>Clear</Button>
+                <InputForm value={form.m_delta_x} type='text' placeholder='Δx1' required id='machinex' name='m_delta_x' onChange={(e)=>{setForm({...form, [e.target.name]: e.target.value})}} onClick={(e)=>{setValidate({...validate,["machine"]: ''})}}/>
+                <SpanForm>Δx1</SpanForm>
+                <InputForm value={form.m_delta_y} type='text' placeholder='Δy1' required id='machiney' name='m_delta_y' onChange={(e)=>{setForm({...form, [e.target.name]: e.target.value})}} onClick={(e)=>{setValidate({...validate,["machine"]: ''})}}/>
+                <SpanForm>Δy1</SpanForm>
+                <InputForm value={form.m_delta_h} type='text' placeholder='Δh1' required id='machineh' name='m_delta_h' onChange={(e)=>{setForm({...form, [e.target.name]: e.target.value})}} onClick={(e)=>{setValidate({...validate,["machine"]: ''})}}/>
+                <SpanForm>Δh1</SpanForm>
               </DivInput>
               {
-                validate.y ? <span style={{color: 'red', fontSize: '14px'}}>{validate.y}</span> : ''
+                validate.machine ? <span style={{color: 'red', fontSize: '14px'}}>{validate.machine}</span> : ''
+              }
+            </>
+          </Form.Item>
+          <Form.Item
+            label="Robot"
+            name="Robot"
+            className="magazine_robot"
+          >
+            <>
+              <DivInput>
+                <InputForm value={form.r_delta_x} type='text' placeholder='Δx2' required id='robotx' name='r_delta_x' onChange={(e)=>{setForm({...form, [e.target.name]: e.target.value})}} onClick={(e)=>{setValidate({...validate,["robot"]: ''})}}/>
+                <SpanForm>Δx2</SpanForm>
+                <InputForm value={form.r_delta_y} type='text' placeholder='Δy2' required id='roboty' name='r_delta_y' onChange={(e)=>{setForm({...form, [e.target.name]: e.target.value})}} onClick={(e)=>{setValidate({...validate,["robot"]: ''})}}/>
+                <SpanForm>Δy2</SpanForm>
+                <InputForm value={form.r_delta_h} type='text' placeholder='Δh2' required id='roboth' name='r_delta_h' onChange={(e)=>{setForm({...form, [e.target.name]: e.target.value})}} onClick={(e)=>{setValidate({...validate,["robot"]: ''})}}/>
+                <SpanForm>Δh2</SpanForm>
+              </DivInput>
+              {
+                validate.robot ? <span style={{color: 'red', fontSize: '14px'}}>{validate.robot}</span> : ''
               }
             </>
           </Form.Item>
@@ -201,10 +284,10 @@ const JigForm = ({hidden, editPoint, title, getData}) => {
           }
           <Form.Item label=" ">
             <>
-              <Button type="primary" htmlType="submit" style={{backgroundColor: 'limegreen'}} size='large'>
-                {title.startsWith('Tạo') ? 'Submit' : 'Update'}
+              <Button type="primary" htmlType="submit" style={{backgroundColor: 'limegreen', minWidth: 100}} size='large'>
+                {title.startsWith('Tạo') ? 'Tạo' : 'Cập nhật'}
               </Button>
-              <Button type="primary" htmlType="button" style={{marginLeft: '15px'}} onClick={handleCancelForm} size='large'>
+              <Button type="primary" htmlType="button" style={{marginLeft: '15px', minWidth: 80}} onClick={handleCancelForm} size='large'>
                 Cancel
               </Button>
             </>

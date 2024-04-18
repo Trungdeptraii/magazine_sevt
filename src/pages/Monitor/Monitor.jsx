@@ -69,18 +69,18 @@ const Monitor = () => {
       }
       <MonitorContainer>
         <MonitorItem >
-          <MonitorTopLeft onMouseDown={()=>{if(!model){handleMouseDown("topLeft")}}} onMouseUp={()=>{if(!model){handleMouseUp("topLeft")}}} onTouchStart={()=>{if(model){handleMouseDown("topLeft")}}} onTouchEnd={()=>{if(model){handleMouseUp("topLeft")}}}  >
-            <FaArrowUp style={{color: bg.topLeft}}/>
+          <MonitorTopLeft onMouseDown={()=>{if(!model){handleMouseDown("bottomRight")}}} onMouseUp={()=>{if(!model){handleMouseUp("bottomRight")}}} onTouchStart={()=>{if(model){handleMouseDown("bottomRight")}}} onTouchEnd={()=>{if(model){handleMouseUp("bottomRight")}}}  >
+            <FaArrowUp style={{color: bg.bottomRight}}/>
           </MonitorTopLeft>
         </MonitorItem>
         <MonitorItem>
-          <MonitorIcon onMouseDown={()=>{if(!model){handleMouseDown("top")}}} onMouseUp={()=>{if(!model){handleMouseUp("top")}}} onTouchStart={()=>{if(model){handleMouseDown("top")}}} onTouchEnd={()=>{if(model){handleMouseUp("top")}}}>
-            <FaChevronUp style={{color: bg.top}}/>
+          <MonitorIcon onMouseDown={()=>{if(!model){handleMouseDown("bottom")}}} onMouseUp={()=>{if(!model){handleMouseUp("bottom")}}} onTouchStart={()=>{if(model){handleMouseDown("bottom")}}} onTouchEnd={()=>{if(model){handleMouseUp("bottom")}}}>
+            <FaChevronUp style={{color: bg.bottom}}/>
           </MonitorIcon>
         </MonitorItem>
         <MonitorItem>
-          <MonitorTopRight onMouseDown={()=>{if(!model){handleMouseDown("topRight")}}} onMouseUp={()=>{if(!model){handleMouseUp("topRight")}}} onTouchStart={()=>{if(model){handleMouseDown("topRight")}}} onTouchEnd={()=>{if(model){handleMouseUp("topRight")}}}>
-            <FaArrowUp style={{color: bg.topRight}}/>
+          <MonitorTopRight onMouseDown={()=>{if(!model){handleMouseDown("bottomLeft")}}} onMouseUp={()=>{if(!model){handleMouseUp("bottomLeft")}}} onTouchStart={()=>{if(model){handleMouseDown("bottomLeft")}}} onTouchEnd={()=>{if(model){handleMouseUp("bottomLeft")}}}>
+            <FaArrowUp style={{color: bg.bottomLeft}}/>
           </MonitorTopRight>  
         </MonitorItem>  
         <MonitorItem>
@@ -99,18 +99,18 @@ const Monitor = () => {
           </MonitorIcon>
         </MonitorItem>  
         <MonitorItem>
-          <MonitorBottomLeft onMouseDown={()=>{if(!model){handleMouseDown("bottomLeft")}}} onMouseUp={()=>{if(!model){handleMouseUp("bottomLeft")}}} onTouchStart={()=>{if(model){handleMouseDown("bottomLeft")}}} onTouchEnd={()=>{if(model){handleMouseUp("bottomLeft")}}}>
-            <FaArrowUp style={{color: bg.bottomLeft}}/>
+          <MonitorBottomLeft onMouseDown={()=>{if(!model){handleMouseDown("topRight")}}} onMouseUp={()=>{if(!model){handleMouseUp("topRight")}}} onTouchStart={()=>{if(model){handleMouseDown("topRight")}}} onTouchEnd={()=>{if(model){handleMouseUp("topRight")}}}>
+            <FaArrowUp style={{color: bg.topRight}}/>
           </MonitorBottomLeft>
         </MonitorItem>
         <MonitorItem>
-          <MonitorIcon onMouseDown={()=>{if(!model){handleMouseDown("bottom")}}} onMouseUp={()=>{if(!model){handleMouseUp("bottom")}}} onTouchStart={()=>{if(model){handleMouseDown("bottom")}}} onTouchEnd={()=>{if(model){handleMouseUp("bottom")}}}>
-            <FaChevronDown style={{color: bg.bottom}}/>
+          <MonitorIcon onMouseDown={()=>{if(!model){handleMouseDown("top")}}} onMouseUp={()=>{if(!model){handleMouseUp("top")}}} onTouchStart={()=>{if(model){handleMouseDown("top")}}} onTouchEnd={()=>{if(model){handleMouseUp("top")}}}>
+            <FaChevronDown style={{color: bg.top}}/>
           </MonitorIcon>
         </MonitorItem>
         <MonitorItem>
-          <MonitorBottomRight onMouseDown={()=>{if(!model){handleMouseDown("bottomRight")}}} onMouseUp={()=>{if(!model){handleMouseUp("bottomRight")}}} onTouchStart={()=>{if(model){handleMouseDown("bottomRight")}}} onTouchEnd={()=>{if(model){handleMouseUp("bottomRight")}}}>
-            <FaArrowUp style={{color: bg.bottomRight}}/>
+          <MonitorBottomRight onMouseDown={()=>{if(!model){handleMouseDown("topLeft")}}} onMouseUp={()=>{if(!model){handleMouseUp("topLeft")}}} onTouchStart={()=>{if(model){handleMouseDown("topLeft")}}} onTouchEnd={()=>{if(model){handleMouseUp("topLeft")}}}>
+            <FaArrowUp style={{color: bg.topLeft}}/>
           </MonitorBottomRight>
         </MonitorItem>  
       </MonitorContainer>

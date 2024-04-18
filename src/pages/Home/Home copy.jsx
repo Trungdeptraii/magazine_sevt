@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { ContaintStatus,HomeContainer, HomePreview, HomeStatus, IconCall, ItemCall, ItemCallName, ItemCallWork, ItemStatus, LabelCall, ListCallContainer, Square, SquareTitle, TitleItemStatus, fnTaskStatus, getField, handleCheckConfig, handleDisabledButton, handleFetchIdModel, handleListCall, listMagazineNumber, listRenderCall, magazineStatus, sendRun } from './homee'
+import { ContaintStatus,HomeContainer, HomePreview, HomeStatus, IconCall, ItemCall, ItemCallName, ItemCallWork, ItemStatus, LabelCall, ListCallContainer, Square, SquareTitle, TitleItemStatus, fnTaskStatus, getField, handleCheckConfig, handleDisabledButton, handleFetchIdModel, listMagazineNumber, magazineStatus, sendRun } from './homee'
 import { Progress, Space, message  } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { hostJS, hostServerAPI, pathLogJS, pathPointJS, portJS, portServerAPI, speedMax } from '../../assets/js/avaribale';
@@ -10,9 +10,9 @@ import Buttonn from '../../components/Button/Buttonn';
 import { createId, findNamePoint } from '../../utils/clientUtil';
 import Badge from '../../components/Badge/Badge';
 import { writeLog } from '../Log/log_';
-import { FaUpDown, FaPhoneVolume, FaLocationDot, FaRegNoteSticky, FaBell, FaRetweet } from "react-icons/fa6"; 
+import { FaParachuteBox, FaPhoneVolume} from "react-icons/fa6"; 
 import {_} from "lodash"
-import { ContentInfoJig, ContentInfoJigItem, ContentInfoMagazine, ContentInfoMagazineItem, ContentInfoMagazineItemTitle, ContentInfoMagazineItemValue, HomeMagazine, InfoHomeMagazine, InfoJig, InfoJigItemIcon, InfoJigItemTitle, InfoMagazine, PointMoveHomeMagazine, ShowJigHomeMagazine, TitleInfoMagazine } from '../../components/Badge';
+import { ContentInfoJig, ContentInfoJigItem, ContentInfoMagazine, HomeMagazine, InfoHomeMagazine, InfoJig, InfoJigItemIcon, InfoJigItemTitle, InfoMagazine, PointMoveHomeMagazine, ShowJigHomeMagazine, TitleInfoMagazine } from '../../components/Badge';
 import { toast } from 'react-toastify';
 
 const conicColors = {
@@ -21,16 +21,33 @@ const conicColors = {
   '40%': '#ecb234',
   '60%': '#01fa22'
 };
-
+let senserON = {
+  parent: {
+    color: "black",
+    border: "2px solid green"
+  },
+  children: {
+    color: "green"
+  }
+}
+let sensorOFF = {
+  parent: {
+    border: "2px solid gainsboro",
+    color: "gainsboro"
+  },
+  children: {
+    color: "gainsboro"
+  }
+}
 let percentDist= 0, showDist= 0.0
 const Home = () => {
   const dispath = useDispatch();
   const {arrPoint} = useSelector((state)=>{return state.point})
   const {data: controlAMR} = useSelector((state)=>{return state.controlAMR})
-  const {amr: {data, jig_status=[0, 0], magazine_status, message: messageAMR, callStatus: callAMR}} = useSelector((state)=>{return state.amr})
+  const {amr: {data, jig_status, magazine_status, message: messageAMR, call: callAMR}} = useSelector((state)=>{return state.amr})
+  const [listCall, setListCall] = useState([])
   let nameCurrent = findNamePoint({dataPoint: arrPoint, dataAMR: data})
   //Start Magazine
-  const [customJigStatus, setCustomJigStatus] = useState({vt1: false, vt2: false})
   const [listModelId, setListModelId] = useState({})
   const [arrNamePoint, setArrNamePoint] = useState({})
   const [dataMagazine, setDataMagazine] = useState({
@@ -77,13 +94,24 @@ const Home = () => {
       }
     }
   }
+  let messageStatus = useMemo (()=>{
+    if(messageAMR?.message){
+      return messageAMR.message
+    }else return "Chưa có công việc"
+  }, [messageAMR?.message])
   useEffect(()=>{
     getPoint()
     handleFetchIdModel({path: "magazine_setting", cb1: setListModelId, cb2: setArrNamePoint})
   }, [])
   useEffect(()=>{
-    setCustomJigStatus({vt1: jig_status[0], vt2: jig_status[1]})
-  }, [jig_status[0], jig_status[1]])
+    let calls = []
+    if(callAMR?.length){
+      callAMR.forEach((call)=>{
+        calls = [...calls, ...call.status]
+      })
+      setListCall(calls)
+    }
+  }, [callAMR?.length])
   useEffect(()=>{
     let time = setTimeout(()=>{
       if(!targetId){
@@ -309,7 +337,7 @@ const Home = () => {
     })
     handleDisabledButton(e)
   }, [])
-  // console.log(dataMagazine);
+  // console.log(controlAMR);
   return (
     <HomeContainer>
       <TitleField>Trang chủ</TitleField>
@@ -354,55 +382,70 @@ const Home = () => {
               <Log pageSize={heightLog?.current?.clientHeight > 400 ? pageLogFull : pageLog} event={logEvent}/>
           </ContentLog> */}
           <HomeMagazine >
-            <Badge onHandle={handleDataMagazine} controlAMR={controlAMR} jigVT1={customJigStatus.vt1} jigVT2={customJigStatus.vt2}/>
+            <Badge onHandle={handleDataMagazine} controlAMR={controlAMR} messageAMR={messageStatus}/>
             <InfoHomeMagazine>
               <PointMoveHomeMagazine>
-                <TitleInfoMagazine style={{paddingLeft: 20}}><FaRetweet style={{marginRight: 5, color: "darkgreen"}}/>Trạng thái các bộ gọi</TitleInfoMagazine>
+                <TitleInfoMagazine style={{paddingLeft: 20}}>Trạng thái các bộ gọi</TitleInfoMagazine>
                 <ListCallContainer>
-                  {
-                    listRenderCall.map((item, index)=>{
-                      return(
-                        <ItemCall key={index} style={{backgroundColor: handleListCall(callAMR)[index] ? "rgb(111 255 92)" : "rgba(211, 211, 211, 0.6)", color: handleListCall(callAMR)[index] ? "#000052" : "rgb(128 128 128)"}}>
-                          <IconCall>
-                            <FaPhoneVolume style={{display: handleListCall(callAMR)[index] ? "none": ""}}/> 
-                            <FaPhoneVolume style={{display: handleListCall(callAMR)[index] ? "" : "none"}}/> 
-                          </IconCall>
-                          <LabelCall>
-                            <ItemCallName>{item.line}</ItemCallName>
-                            <ItemCallWork>{item.status}</ItemCallWork>
-                          </LabelCall>
-                        </ItemCall>
-                      )
-                    })
-                  }
-                  
+                  <ItemCall>
+                    <IconCall> <FaPhoneVolume /> </IconCall>
+                    <LabelCall>
+                      <ItemCallName>Line 45</ItemCallName>
+                      <ItemCallWork>Load Jig</ItemCallWork>
+                    </LabelCall>
+                  </ItemCall>
+                  <ItemCall>
+                    <IconCall> <FaPhoneVolume /> </IconCall>
+                    <LabelCall>
+                      <ItemCallName>Line 45</ItemCallName>
+                      <ItemCallWork>Load Jig</ItemCallWork>
+                    </LabelCall>
+                  </ItemCall>
+                  <ItemCall>
+                    <IconCall> <FaPhoneVolume /> </IconCall>
+                    <LabelCall>
+                      <ItemCallName>Line 45</ItemCallName>
+                      <ItemCallWork>Load Jig</ItemCallWork>
+                    </LabelCall>
+                  </ItemCall>
+                  <ItemCall>
+                    <IconCall> <FaPhoneVolume /> </IconCall>
+                    <LabelCall>
+                      <ItemCallName>Line 45</ItemCallName>
+                      <ItemCallWork>Load Jig</ItemCallWork>
+                    </LabelCall>
+                  </ItemCall>
+                  <ItemCall>
+                    <IconCall> <FaPhoneVolume /> </IconCall>
+                    <LabelCall>
+                      <ItemCallName>Line 45</ItemCallName>
+                      <ItemCallWork>Load Jig</ItemCallWork>
+                    </LabelCall>
+                  </ItemCall>
                 </ListCallContainer>
               </PointMoveHomeMagazine>
               <ShowJigHomeMagazine>
                 <InfoMagazine>
-                  <TitleInfoMagazine><FaRetweet style={{marginRight: 5, color: "darkgreen"}}/>  Trạng thái Magazine</TitleInfoMagazine>
+                  <TitleInfoMagazine>Trạng thái Magazine</TitleInfoMagazine>
                   <ContentInfoMagazine>
-                    <ContentInfoMagazineItem>
-                      <FaLocationDot />
-                      <ContentInfoMagazineItemTitle>Line: </ContentInfoMagazineItemTitle>
-                      <ContentInfoMagazineItemValue>{listMagazineNumber.includes(magazine_status) ? magazineStatus[magazine_status].line: ""}</ContentInfoMagazineItemValue>
-                    </ContentInfoMagazineItem>
-                    <ContentInfoMagazineItem>
-                      <FaUpDown />
-                      <ContentInfoMagazineItemTitle>Tầng: </ContentInfoMagazineItemTitle>
-                      <ContentInfoMagazineItemValue>{listMagazineNumber.includes(magazine_status) ? magazineStatus[magazine_status].floor: ""}</ContentInfoMagazineItemValue>
-                    </ContentInfoMagazineItem>
-                    <ContentInfoMagazineItem>
-                      <FaRegNoteSticky />
-                      <ContentInfoMagazineItemTitle>Công việc: </ContentInfoMagazineItemTitle>
-                      <ContentInfoMagazineItemValue>{listMagazineNumber.includes(magazine_status) ? magazineStatus[magazine_status].status: ""}</ContentInfoMagazineItemValue>
-                    </ContentInfoMagazineItem>
+                    <span style={{textAlign: "left", lineHeight: 1.2}}>{listMagazineNumber.includes(magazine_status) ? `${magazineStatus[magazine_status.toString()].line} ${magazineStatus[magazine_status.toString()].floor} ${magazineStatus[magazine_status.toString()].status}` : magazineStatus["0"].status }</span>
                   </ContentInfoMagazine>
                 </InfoMagazine>
                 <InfoJig>
-                  <TitleInfoMagazine><FaBell className='noti' /> Thông báo</TitleInfoMagazine>
+                  <TitleInfoMagazine>Trạng thái Jig</TitleInfoMagazine>
                   <ContentInfoJig>
-                    {messageAMR}
+                    <ContentInfoJigItem style={jig_status && jig_status[0] == 1 ? {...senserON.parent} : {...sensorOFF.parent}}>
+                      <InfoJigItemIcon>
+                        <FaParachuteBox style={jig_status && jig_status[0] == 1 ? {...senserON.children} : {...sensorOFF.children}}/>
+                      </InfoJigItemIcon>
+                      <InfoJigItemTitle>VT 1</InfoJigItemTitle>
+                    </ContentInfoJigItem>
+                    <ContentInfoJigItem style={jig_status && jig_status[1] == 1 ? {...senserON.parent} : {...sensorOFF.parent}}>
+                      <InfoJigItemIcon>
+                        <FaParachuteBox style={jig_status && jig_status[1] == 1 ? {...senserON.children} : {...sensorOFF.children}}/>
+                      </InfoJigItemIcon>
+                      <InfoJigItemTitle>VT 2</InfoJigItemTitle>
+                    </ContentInfoJigItem>
                   </ContentInfoJig>
                 </InfoJig>
                 
@@ -412,11 +455,11 @@ const Home = () => {
         </div>
         {
           <Space style={{width: "100%", display: "flex", justifyContent: "space-between", gap: 20}}>
-          <Buttonn onClick={handleRunAMR} style={{backgroundColor: controlAMR.run ? "limegreen" : "#1677ff", height: 50, fontSize: 18}}>Chạy</Buttonn>
-          <Buttonn onClick={handleRunStop} style={{backgroundColor: taskStatus == 3 ? "orange": "#1677ff", height: 50, fontSize: 18}}>{taskStatus == 3 ? "Tiếp tục" : "Dừng"}</Buttonn>
-          <Buttonn onClick={handleCancelAMR} style={{height: 50, fontSize: 18}}>Hủy</Buttonn>
-          <Buttonn onClick={handleGoStandBy} style={{height: 50, fontSize: 18}}>StandBy</Buttonn>
-          <Buttonn onClick={handleGoCharge} style={{height: 50, fontSize: 18}}>Sạc</Buttonn>
+          <Buttonn onClick={handleRunAMR} style={{backgroundColor: controlAMR.run ? "limegreen" : "#1677ff", height: 50, fontSize: 20}}>Chạy</Buttonn>
+          <Buttonn onClick={handleRunStop} style={{backgroundColor: taskStatus == 3 ? "orange": "#1677ff", height: 50, fontSize: 20}}>{taskStatus == 3 ? "Tiếp tục" : "Dừng"}</Buttonn>
+          <Buttonn onClick={handleCancelAMR} style={{height: 50, fontSize: 20}}>Hủy</Buttonn>
+          <Buttonn onClick={handleGoStandBy} style={{height: 50, fontSize: 20}}>StandBy</Buttonn>
+          <Buttonn onClick={handleGoCharge} style={{height: 50, fontSize: 20}}>Sạc</Buttonn>
         </Space>
         }
       </HomePreview>

@@ -72,8 +72,8 @@ export const bgInitial = {
 }
 
 export const settingInitial = {
-    speed: 0.3,
-    rotate: 10
+    speed: 0.1,
+    rotate: 5
 }
 export const dataMove = {
     vx: 0.3,

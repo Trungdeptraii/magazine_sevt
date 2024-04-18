@@ -116,8 +116,8 @@ const Jig = () => {
               value={jig}
               onChange={onChangeJig}
               >
-              <Radio.Button style={{height: "40px", lineHeight: "40px", fontWeight: 600}} value="get">Gắp Jig</Radio.Button>
-              <Radio.Button style={{height: "40px", lineHeight: "40px", fontWeight: 600}} value="return">Nhả Jig</Radio.Button>
+              <Radio.Button style={{height: "40px", lineHeight: "40px", fontWeight: 600}} value="get">Load Jig</Radio.Button>
+              <Radio.Button style={{height: "40px", lineHeight: "40px", fontWeight: 600}} value="return">Unload Jig</Radio.Button>
           </Radio.Group>
           <Radio.Group
               value={line}
@@ -130,7 +130,7 @@ const Jig = () => {
         </Space>
         <Table dataSource={dataTable} columns={columns} />
         {
-            showForm ? <JigForm  hidden={handleHiddenForm} editPoint={editPoint} title={title} getData={getJigLine}/> : ""
+            showForm ? <JigForm  hidden={handleHiddenForm} editPoint={editPoint} title={title} getData={getJigLine} pathFormJig={jigLine}/> : ""
         }
     </div>
     

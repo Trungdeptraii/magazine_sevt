@@ -21,7 +21,7 @@ export const HomeStatus = styled.div`
 
 export const HomePreview = styled.div`
     position: relative;
-    height: calc(100vh - 270px);
+    height: calc(100vh - 310px);
 `
 export const ContentLog = styled.div`
     /* position: absolute; */
@@ -72,8 +72,12 @@ export const Square = styled.div`
     justify-content: center;
     font-size: 25px;
     font-weight: 600;
+    overflow: hidden;
 `
 export const SquareTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 export const fnTaskStatus = (emergency, blocked, taskStatus, errors)=>{
     if(emergency || blocked || taskStatus == 3){
@@ -90,130 +94,6 @@ export const fnTaskStatus = (emergency, blocked, taskStatus, errors)=>{
     return ""
 }
 
-//Setup MEN
-export let dataGroup = {
-  group_1:["Main1","Main4","Main7","Main10","Main13","Main16","Main19","Main22","Main25","Main28","Main31","Main34","Main37","Main40"],
-  group_2:["Main2","Main5","Main8","Main11","Main14","Main17","Main20","Main23","Main26","Main29","Main32","Main35","Main38","Main41"],
-  group_3:["Main3","Main6","Main9","Main12","Main15","Main18","Main21","Main24","Main27","Main30","Main33","Main36","Main39","Main42"],
-}
-let pointSMD = [
-  { 
-    reverse: [],
-    front: ["Main1", "Main2", "Main3"],
-    point: "LM20"
-  },{
-    reverse: ["Main1", "Main2", "Main3"],
-    front: ["Main4", "Main5", "Main6"],
-    point: "LM21"
-  },{
-    reverse: ["Main4", "Main5", "Main6"],
-    front: ["Main7", "Main8", "Main9"],
-    point: "LM22"
-  },{
-    reverse: ["Main7", "Main8", "Main9"],
-    front: ["Main10", "Main11", "Main12"],
-    point: "LM23"
-  },{
-    reverse: ["Main10", "Main11", "Main12"],
-    front: ["Main13", "Main14", "Main15"],
-    point: "LM24"
-  },{
-    reverse: ["Main13", "Main14", "Main15"],
-    front: ["Main16", "Main17", "Main18"],
-    point: "LM25"
-  },{
-    reverse: ["Main16", "Main17", "Main18"],
-    front: ["Main19", "Main20", "Main21"],
-    point: "LM26"
-  },{
-    reverse: ["Main19", "Main20", "Main21"],
-    front: ["Main22", "Main23", "Main24"],
-    point: "LM27"
-  },{
-    reverse: ["Main22", "Main23", "Main24"],
-    front: ["Main25", "Main26", "Main27"],
-    point: "LM28"
-  },{
-    reverse: ["Main25", "Main26", "Main27"],
-    front: ["Main28", "Main29", "Main30"],
-    point: "LM29"
-  },{
-    reverse: ["Main28", "Main29", "Main30"],
-    front: ["Main31", "Main32", "Main33"],
-    point: "LM30"
-  },{
-    reverse: ["Main31", "Main32", "Main33"],
-    front: ["Main34", "Main35", "Main36"],
-    point: "LM31"
-  },{
-    reverse: ["Main34", "Main35", "Main36"],
-    front: ["Main37", "Main38", "Main39"],
-    point: "LM32"
-  },{
-    reverse: ["Main37", "Main38", "Main39"],
-    front: ["Main40", "Main41", "Main42"],
-    point: "LM33"
-  }
-]
-let pointMain = [
-    { 
-      reverse: [],
-      front: ["Main1", "Main2", "Main3"],
-      point: "LM40"
-    },{
-      reverse: ["Main1", "Main2", "Main3"],
-      front: ["Main4", "Main5", "Main6"],
-      point: "LM41"
-    },{
-      reverse: ["Main4", "Main5", "Main6"],
-      front: ["Main7", "Main8", "Main9"],
-      point: "LM42"
-    },{
-      reverse: ["Main7", "Main8", "Main9"],
-      front: ["Main10", "Main11", "Main12"],
-      point: "LM43"
-    },{
-      reverse: ["Main10", "Main11", "Main12"],
-      front: ["Main13", "Main14", "Main15"],
-      point: "LM44"
-    },{
-      reverse: ["Main13", "Main14", "Main15"],
-      front: ["Main16", "Main17", "Main18"],
-      point: "LM45"
-    },{
-      reverse: ["Main16", "Main17", "Main18"],
-      front: ["Main19", "Main20", "Main21"],
-      point: "LM46"
-    },{
-      reverse: ["Main19", "Main20", "Main21"],
-      front: ["Main22", "Main23", "Main24"],
-      point: "LM47"
-    },{
-      reverse: ["Main22", "Main23", "Main24"],
-      front: ["Main25", "Main26", "Main27"],
-      point: "LM48"
-    },{
-      reverse: ["Main25", "Main26", "Main27"],
-      front: ["Main28", "Main29", "Main30"],
-      point: "LM49"
-    },{
-      reverse: ["Main28", "Main29", "Main30"],
-      front: ["Main31", "Main32", "Main33"],
-      point: "LM50"
-    },{
-      reverse: ["Main31", "Main32", "Main33"],
-      front: ["Main34", "Main35", "Main36"],
-      point: "LM51"
-    },{
-      reverse: ["Main34", "Main35", "Main36"],
-      front: ["Main37", "Main38", "Main39"],
-      point: "LM52"
-    },{
-      reverse: ["Main37", "Main38", "Main39"],
-      front: ["Main40", "Main41", "Main42"],
-      point: "LM53"
-    }
-  ]
 function renderPoint(group="", type="smd"){
     if(type == "smd"){
         return pointSMD.filter((item)=>item.reverse.includes(group) || item.front.includes(group))
@@ -296,4 +176,190 @@ export const sendRun = {
     jig: false,
     magazine: false
   }
+}
+
+export const magazineStatus = {
+  0: {
+    line: "",
+    status: " ",
+    floor: "",
+  },
+  1: {
+    line: "46",
+    status: "Unload Magazine",
+    floor: "1",
+  },
+  2: {
+    line: "46",
+    status: "Load Magazine",
+    floor: "2",
+  },
+  3: {
+    line: "45",
+    status: "Unload Magazine",
+    floor: "1",
+  },
+  4: {
+    line: "45",
+    status: "Load Magazine",
+    floor: "2",
+  }
+}
+
+export const listMagazineNumber = [0, 1, 2, 3, 4]
+
+export const ListCallContainer = styled.div`
+  padding: 0 20px;
+  margin: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px
+`
+
+export const ItemCall = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  flex-basis: calc((100% - 45px)/4);
+  border-radius: 8px;
+  box-shadow: 0 0 6px 1px #c5baba;
+
+  background-color: rgba(211, 211, 211, 0.6);
+  color: rgb(128 128 128);
+`
+
+export const ItemCallName = styled.div`
+`
+export const ItemCallWork = styled.div`
+`
+
+
+const callActive = keyframes`
+    from {
+      transform: rotate3d(0, 0, 1, 0deg);
+      color: #000052
+    }
+    20%, 32%, 44%, 56%, 68% {
+      transform: rotate3d(0, 0, 1, 0deg);
+      color: #000052
+    }
+    23%, 35%, 47%, 59%, 71% {
+      transform: rotate3d(0, 0, 1, 15deg);
+      color: #000052
+    }
+    26%, 38%, 50%, 62%, 74% {
+      transform: rotate3d(0, 0, 1, 0deg);
+      color: #000052
+    }
+    29%, 41%, 53%, 65%, 77% {
+      transform: rotate3d(0, 0, 1, -15deg);
+      color: #000052
+    }
+    80% {
+      transform:rotate3d(0, 0, 1, 0deg);
+      color: #000052
+    }
+    100% {
+      color: rgb(128 128 128);
+    }
+`
+
+export const IconCall = styled.div`
+    position: relative;
+    width: 35px;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & > svg{
+      position: absolute;
+      left: 0;
+    }
+    & > svg:last-child{
+      animation: ${callActive} 1.5s infinite linear;
+    }
+`
+export const LabelCall = styled.div`
+`
+export const listRenderCall = [
+  {
+    line: "Line 45",
+    status: "Load Jig"
+  },{
+    line: "Line 46",
+    status: "Load Jig"
+  },{
+    line: "Line 45",
+    status: "Load Magazine"
+  },{
+    line: "Line 46",
+    status: "Load Magazine"
+  },{
+    line: "Line 45",
+    status: "Unload Jig"
+  },{
+    line: "Line 46",
+    status: "Unload Jig"
+  },{
+    line: "Line 45",
+    status: "Unload Magazine"
+  },{
+    line: "Line 46",
+    status: "Unload Magazine"
+  },
+]
+export const handleListCall = (data)=>{
+  const arrListCallCustoms = [0, 0, 0, 0, 0, 0, 0, 0]
+  //Load Jig Line 45
+  if(data?.Call_LoadJig_L45){
+    arrListCallCustoms[0] = 1
+  }else{
+    arrListCallCustoms[0] = 0
+  }
+  //Load Jig Line 46
+  if(data?.Call_LoadJig_L46){
+    arrListCallCustoms[1] = 1
+  }else{
+    arrListCallCustoms[1] = 0
+  }
+  //Load Magazine Line 45
+  if(data?.Call_Load_Floor1_L45 || data?.Call_Load_Floor2_L45){
+    arrListCallCustoms[2] = 1
+  }else{
+    arrListCallCustoms[2] = 0
+  }
+  //Load Magazine Line 46
+  if(data?.Call_Load_Floor1_L46 || data?.Call_Load_Floor2_L46){
+    arrListCallCustoms[3] = 1
+  }else{
+    arrListCallCustoms[3] = 0
+  }
+  //UnLoad Jig Line 45
+  if(data?.Call_UnLoadJig_L45){
+    arrListCallCustoms[4] = 1
+  }else{
+    arrListCallCustoms[4] = 0
+  }
+  //UnLoad Jig Line 46
+  if(data?.Call_UnLoadJig_L46){
+    arrListCallCustoms[5] = 1
+  }else{
+    arrListCallCustoms[5] = 0
+  }
+  //UnLoad Magazine Line 45
+  if(data?.Call_Unload_Floor1_L45 || data?.Call_Unload_Floor2_L45){
+    arrListCallCustoms[6] = 1
+  }else{
+    arrListCallCustoms[6] = 0
+  }
+  //UNLoad Magazine Line 46
+  if(data?.Call_Unload_Floor1_L46 || data?.Call_Unload_Floor2_L46){
+    arrListCallCustoms[7] = 1
+  }else{
+    arrListCallCustoms[7] = 0
+  }
+  return arrListCallCustoms
 }
