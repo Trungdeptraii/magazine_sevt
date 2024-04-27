@@ -90,7 +90,7 @@ export const handleNotis = ({emergency=false, blocked=false, errors=[], follow= 
     message = `Kiểm tra thông báo để xem thông tin lỗi`
     let messErrors = errors.map((error)=>{
       return {
-        time: error.desc.slice(error.desc.indexOf("[")+1,  error.desc.indexOf("]")),
+        // time: error.desc.slice(error.desc.indexOf("[")+1,  error.desc.indexOf("]")),
         mess: error.desc.slice(error.desc.indexOf(" ")+1)
       }
     })

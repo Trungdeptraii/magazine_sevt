@@ -7,8 +7,9 @@ import { string, object } from 'yup';
 import { TitleField } from '../../../../assets/js/globalStyle';
 import { FetchAPI } from '../../../../utils/api';
 import {toast} from "react-toastify"
+import { filterMagazine } from '../../../../pages/Setting/setting_';
 
-const MagazineForm = ({editPoint, hidden, title, getData, pathFormMagazine}) => {
+const MagazineForm = ({editPoint, hidden, title, getData, pathFormMagazine, pointUpdateAll}) => {
   const [validate, setValidate] = useState({name: "", floor1_height: "", floor2_height: ""})
   const [form, setForm] = useState(editPoint)
   const handleCancelForm = ()=>{
@@ -80,14 +81,46 @@ const MagazineForm = ({editPoint, hidden, title, getData, pathFormMagazine}) => 
                   method= "PATCH",
                   path = path + `/${editPoint.id}`
                 }
-                let {type} = await FetchAPI({method, host: hostJS, port: portJS, path, data: result})
+                let {type, data} = await FetchAPI({method, host: hostJS, port: portJS, path, data: result})
                 if(type == "succees"){
                   setForm(initialState)
                   toast.success(`Đã ${checkButton == "Create" ? "tạo" : "cập nhật"} thành công ${result.name}`)
-                  if(checkButton == "Update"){
-                    hidden()
-                  }
+                  hidden()
                   getData()
+                  if(pointUpdateAll.includes(data.id)){
+                    let dataUpdate = filterMagazine(data)
+                    try {
+                      let {data} = await FetchAPI({method: "GET", host: hostJS, port: portJS, path: "magazine"})
+                      if(data.length){
+                        let line, type
+                        let result = data[0];
+                        console.log("after", result);
+                        if(pathFormMagazine == "load_45"){
+                          line = "line45"
+                          type = "load"
+                        }else if(pathFormMagazine == "unload_45"){
+                          line = "line45"
+                          type = "unload"
+                        }else if(pathFormMagazine == "load_46"){
+                          line = "line46"
+                          type = "load"
+                        }else if(pathFormMagazine == "unload_46"){
+                          line = "line46"
+                          type = "unload"
+                        }
+                        console.log("line", line);
+                        console.log("type", type);
+                        dataUpdate.point = result[line]["magazine"][type].point
+                        result[line]["magazine"][type] = dataUpdate
+                        let {type: resultType} = await FetchAPI({method: "PATCH", host: hostJS, port: portJS, path: `magazine/amr`, data: result})
+                        if(resultType == "succees"){
+                          toast.success("Cập nhật phần cài đặt thành công !!!")
+                        }
+                      }
+                    } catch (error) {
+                      console.log(error);
+                    }
+                  }
                 }else if(type == "fail"){
                   toast.warning("Dữ liệu không đúng hãy kiểm tra lại")
                 }else if(type == "error"){

@@ -1,7 +1,8 @@
 import {keyframes, styled} from "styled-components"
-import { Robot, hostJS, portJS } from "../../assets/js/avaribale"
+import { Robot, hostJS, hostServerAPI, portJS, portServerAPI } from "../../assets/js/avaribale"
 import { FetchAPI } from "../../utils/api"
 import { toast } from "react-toastify"
+import { Segmented } from 'antd';
 
 export const BadgeContaint = styled.div`
     height: 100%;
@@ -260,5 +261,105 @@ export const senserOFF = {
   },
   children: {
     color: "gainsboro"
+  }
+}
+
+export const ManualMagazine = styled.div`
+    flex-basis: calc(100% - (100% / 3) + 15px);
+    box-shadow: 0 0 2px 2px #f5dede;
+    color: black;
+    border-radius: 5px;
+`
+export const SegmentedCustom = styled(Segmented)`
+    margin-top: 15px;
+    padding: 0 5px;
+    & > .ant-segmented-group label.ant-segmented-item-selected{
+        background-color: #1677ff;
+        color: white;
+        font-weight: 600;
+    }
+    & > .ant-segmented-group div{
+        min-height: 35px;
+        line-height: 35px;
+    }
+`
+export const WorkMagazineContent = styled.div`
+    margin-top: 15px;
+`
+export const WorkMagazine = styled.div`
+    margin-top: 10px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    font-size: 17px;
+`
+
+export const WorkTitleMagazine = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`
+
+export const SpanTitleWork = styled.span`
+    font-weight: 600;
+`
+export const TextManual = styled.div`
+    margin-top: 10px;
+    padding: 0 20px;
+    font-size: 18px;
+    line-height: 25px;
+`
+export const itemsLine = 
+[
+    {
+    value: 'line 45',
+    label: 'Line 45',
+    },
+    {
+    value: 'line 46',
+    label: 'Line 46',
+    }
+]
+
+export const itemsWork = 
+[
+    {
+    value: 'load',
+    label: 'Load',
+    },
+    {
+    value: 'unload',
+    label: 'Unload',
+    }
+]
+
+export const itemsFloor = 
+[
+    {
+    value: 1,
+    label: 'Tầng 1',
+    },
+    {
+    value: 2,
+    label: 'Tầng 2',
+    }
+]
+
+export const initialMagazine = {
+    line: "line 45",
+    work: "load",
+    floor: 1,
+    mode: "jig"
+}
+
+export const switchModeAuto = async(line)=>{
+    let {type} = await FetchAPI({method: "POST", host: hostServerAPI, port: portServerAPI, path: "line_auto", data: {line}})
+    if(type == "succees"){
+    toast.success(`Đã gửi tín hiệu chạy Auto: ${line.includes("45") ? "Line 45" : "Line 46"}`)
+  }else if(type == "fail"){
+    toast.warning(`Gửi tín hiệu chuyển line thất bại...`)
+  }else if(type == "error"){
+    toast.error("Không có phản hồi từ server")
   }
 }

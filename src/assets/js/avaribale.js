@@ -23,7 +23,7 @@ export const pathRelocationJS = env.VITE_PATH_RELOCATIONAPI
 export const pathLogJS = env.VITE_PATH_LOG
 export const pathWareHouse = env.VITE_PATH_WARE_HOUSE
 
-export const pageSizePoint = 7
+export const pageSizePoint = 5
 export const pageSizeRelocation = 5
 
 export const isLogStatus = "disable"

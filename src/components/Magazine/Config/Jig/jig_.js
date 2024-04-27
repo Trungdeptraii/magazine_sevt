@@ -1,4 +1,6 @@
 import {styled} from 'styled-components'
+import { FetchAPI } from '../../../../utils/api'
+import { hostJS, portJS } from '../../../../assets/js/avaribale'
 export const LayoutForm = styled.div`
     position: fixed;
     inset: 0;
@@ -102,4 +104,15 @@ export const iniitalValidate = {
     "door": "",
     "machine": "",
     "robot": ""
+}
+
+export const checkDeleteModel = async(cb)=>{
+    let arr = [];
+    let {data} = await FetchAPI({method: "GET", host: hostJS, port: portJS, path: "magazine_setting"})
+    data.forEach((item)=>{
+        if(item.modelId){
+            arr.push(item.modelId)
+        }
+    })
+    cb(arr)
 }

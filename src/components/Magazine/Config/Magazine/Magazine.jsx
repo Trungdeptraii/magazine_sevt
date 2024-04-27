@@ -6,6 +6,7 @@ import { FetchAPI } from '../../../../utils/api';
 import { hostJS, portJS } from '../../../../assets/js/avaribale';
 import { initialState } from './magazine_';
 import {toast} from "react-toastify"
+import { checkDeleteModel } from '../Jig/jig_';
 
 const Magazine = () => {
     let [magazine, setMagazine] = useState("load")
@@ -14,6 +15,8 @@ const Magazine = () => {
     let [title, setTitle] = useState("Tạo")
     let [dataTable, setDataTable] = useState([])
     let [showForm, setShowForm] = useState(false)
+    const [pointDelete, setPointDelete] = useState([])
+
     let onChangeMagazine = (e)=>{
         setMagazine(e.target.value)
         setMagazineLine(`${e.target.value}_${line}`)
@@ -55,6 +58,9 @@ const Magazine = () => {
         }
     }, [magazineLine])
     const handleDeleteMagazine = async(id, name)=>{
+      if(pointDelete.includes(id)){
+        return toast.warning(`Magazine ${name} đang được chọn trong cấu hình không thể xóa !!!`)
+      }
       let {type} = await FetchAPI({method: "DELETE", host: hostJS, port: portJS, path: `magazine_${magazineLine}/${id}`})
       if(type == "succees"){
         toast.success(`Xóa ${name} thành công...`)
@@ -80,6 +86,9 @@ const Magazine = () => {
     useEffect(()=>{
         getMagazineLine()
     }, [magazineLine])
+    useEffect(()=>{
+      checkDeleteModel(setPointDelete)
+    },[])
     const columns = [
         {
             title: 'Tên',
@@ -160,7 +169,7 @@ const Magazine = () => {
         </Space>
         <Table dataSource={dataTable} columns={columns} />
         {
-            showForm ? <MagazineForm  hidden={handleHiddenForm} editPoint={editPoint} title={title} getData={getMagazineLine} pathFormMagazine={magazineLine}/> : ""
+            showForm ? <MagazineForm  hidden={handleHiddenForm} editPoint={editPoint} title={title} getData={getMagazineLine} pathFormMagazine={magazineLine} pointUpdateAll={pointDelete}/> : ""
         }
     </div>
     

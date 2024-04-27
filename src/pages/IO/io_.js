@@ -36,9 +36,9 @@ export const IOTitle = styled.div`
 export const IOSwitch = styled(Switch)`
 `
 
-export const DIControl = ["Sensor 1", "Sensor 2", "Sensor 3", "Sensor 4", "Sensor 5", "Sensor 6", "Sensor M1", "Sensor M2", "Sensor M3", "Sensor M4", "Sensor M5", "Sensor M6"]
+export const DIControl = ["Sensor 1", "Sensor 2", "Sensor 3", "Sensor 4", "Sensor 5", "Sensor 6", "Sensor M7", "Sensor 8", "Sensor 9", "Sensor 10", "Sensor 11", "Sensor 12"]
 
-export const DOControl = ["DO 1", "DO 2", "DO 3", "DO 4", "DO 5", "DO 6", "DO 7", "DO 8", "DO 9", "DO 10", ]
+export const DOControl = ["Reset", "DO 2", "DO 3", "DO 4", "DO 5", "DO 6", "DO 7", "DO 8", "DO 9", "DO 10", ]
 export const Control = [
     {
         id: 1,

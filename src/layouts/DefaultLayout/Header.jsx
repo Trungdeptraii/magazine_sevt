@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react'
-import { HeaderAMRStatus, HeaderItem, HeaderItemIcon, HeaderItemValue, HeaderItemDv, SHeader } from './layout'
+import { HeaderAMRStatus, HeaderItem, HeaderItemIcon, HeaderItemValue, HeaderItemDv, SHeader, listArrCheckFinish } from './layout'
 import { useDispatch, useSelector } from 'react-redux'
 import { arrFieldHeaderStatus, arrFieldHeaderStatusBoolean } from './layout'
 import { hostJS, logo, pathLogJS, pathPointJS, pathRelocationJS, portJS, widthSideBar } from '../../assets/js/avaribale'
@@ -103,41 +103,19 @@ const Header = () => {
     writeLog({content: "Wellcome to GUI ESA Robot", current_station: nameCurrent, desc: "Reload"})
   }, [])
   useEffect(()=>{
-    if(data?.task_status == 4 && controlAMR.run && controlAMR.time && data.current_station == controlAMR.targetId){
-      FetchAPI({method: "DELETE", port: portJS, host: hostJS, path: `${pathLogJS}/${controlAMR.id}`})
-      writeLog({current_station: data.current_station, desc: "Hoàn thành", content: `Đã tới điểm ${nameCurrent}, thời gian: ${showTime({type: "startTime", data: (Date.now()-controlAMR.time)})}`})
+    if(data?.task_status == 4 && controlAMR.run && listArrCheckFinish.includes(data.current_station)){
+      console.log("Reset global !!!");
       dispath({
         type: "control/update",
         payload:{
-          run: false,
-          cancel: false,
-          stop: false,
-          work: [],
-          goStandBy: false,
-          goCharge: false
         }
       })
-      dispath({
-        type: "log/update"
-      })
-    }else if(data?.task_status == 6 && controlAMR.run && controlAMR.time && controlAMR.targetId){
-      FetchAPI({method: "DELETE", port: portJS, host: hostJS, path: `${pathLogJS}/${controlAMR.id}`})
+    }else if(data?.task_status == 6 && controlAMR.run){
       dispath({
         type: "control/update",
         payload:{
-          run: false,
-          cancel: false,
-          stop: false,
-          work: [],
-          goStandBy: false,
-          goCharge: false,
-          time: "",
-          targetId: ""
+          
         }
-      })
-      writeLog({current_station: data.current_station, desc: "Hủy", content: ` Hủy di chuyển tới điểm ${controlAMR.targetId}`})
-      dispath({
-        type: "log/update"
       })
     }
   },[data?.task_status])

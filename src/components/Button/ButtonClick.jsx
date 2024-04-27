@@ -1,18 +1,18 @@
 import React, { memo, useRef, useState } from 'react'
 import { ButtonBg, ButtonContainer, Circle, InputCustoms, TextLeft, TextRight } from './button'
 
-const ButtonClick = ({checked = false, onClick, disabled = false, checkedValue = "Bật", unCheckedValue="Tắt", idIO= "", valueIO= ""}) => {
+const ButtonClick = ({checked = false, onClick, disabled = false, checkedValue = "Bật", unCheckedValue="Tắt", idIO= "", valueIO= "", style={}, space=0}) => {
   return (
-    <div onClick={(e)=>onClick(idIO, valueIO, e)} style={{display: "flex", justifyContent: "center"}}>
-      <InputCustoms type='checkbox' checked={checked} hidden disabled={disabled} onChange={()=>{}}/>
-      <ButtonContainer>
+    <label htmlFor='btnButton'  style={{display: "flex", justifyContent: "center"}}>
+      <InputCustoms type='checkbox' id='btnButton' checked={checked} hidden disabled={disabled} onChange={()=>{}} onClick={(e)=>onClick(idIO, valueIO, e)}/>
+      <ButtonContainer style={{...style}}>
         <ButtonBg></ButtonBg>
         <Circle />
         {
-            checked ? <TextLeft>{checkedValue}</TextLeft> : <TextRight>{unCheckedValue}</TextRight>
+            checked ? <TextLeft style={{left: space}}>{checkedValue}</TextLeft> : <TextRight style={{right: space}}>{unCheckedValue}</TextRight>
         }
       </ButtonContainer>
-    </div>
+    </label>
   )
 }
 

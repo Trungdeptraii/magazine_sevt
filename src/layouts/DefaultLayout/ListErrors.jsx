@@ -50,7 +50,7 @@ const ListErrors = ({data, open, setOpen}) => {
                     dataSource={data}
                     renderItem={({time, mess}) => <List.Item>
                         <List.Item.Meta 
-                            title={format(new Date(time), "HH:mm:ss")}
+                            // title={format(new Date(time), "HH:mm:ss")}
                             description={mess}
                         />
                     </List.Item>}

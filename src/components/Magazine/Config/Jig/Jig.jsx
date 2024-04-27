@@ -4,7 +4,7 @@ import { FetchAPI } from '../../../../utils/api'
 import { hostJS, portJS} from '../../../../assets/js/avaribale'
 import {PlusCircleFilled } from '@ant-design/icons';
 import JigForm from './JigForm';
-import { initialState } from './jig_';
+import { checkDeleteModel, initialState } from './jig_';
 import {toast} from "react-toastify"
 
 const Jig = () => {
@@ -13,6 +13,8 @@ const Jig = () => {
     let [jigLine, setJigLine] = useState("get_45")
     let [dataTable, setDataTable] = useState([])
     let [showForm, setShowForm] = useState(false)
+    const [pointDelete, setPointDelete] = useState([])
+
     // Start Form
     const [editPoint, setEditPoint] = useState(initialState)
     const handleHiddenForm = useCallback(()=>{
@@ -42,6 +44,9 @@ const Jig = () => {
         }
     }, [jigLine])
     const handleDeletePoint = async(id, name)=>{
+      if(pointDelete.includes(id)){
+        return toast.warning(`Model ${name} đang được chọn trong cấu hình không thể xóa !!!`)
+      }
       let {type} = await FetchAPI({method: "DELETE", host: hostJS, port: portJS, path: `jig_${jigLine}/${id}`})
       if(type == "succees"){
         toast.success(`Xóa ${name} thành công...`)
@@ -67,6 +72,9 @@ const Jig = () => {
     useEffect(()=>{
         getJigLine()
     }, [jigLine])
+    useEffect(()=>{
+      checkDeleteModel(setPointDelete)
+    },[])
     const columns = [
         {
             title: 'Tên Model',
@@ -130,7 +138,7 @@ const Jig = () => {
         </Space>
         <Table dataSource={dataTable} columns={columns} />
         {
-            showForm ? <JigForm  hidden={handleHiddenForm} editPoint={editPoint} title={title} getData={getJigLine} pathFormJig={jigLine}/> : ""
+            showForm ? <JigForm  hidden={handleHiddenForm} editPoint={editPoint} title={title} getData={getJigLine} pathFormJig={jigLine} pointUpdateAll={pointDelete}/> : ""
         }
     </div>
     

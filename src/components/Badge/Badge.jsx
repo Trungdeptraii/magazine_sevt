@@ -1,65 +1,139 @@
 import React, { memo, useEffect, useState } from 'react'
 import {useSelector} from "react-redux"
-import { BadgeContaint, BadgeItem, BadgeMain, BadgeTitle, ItemChild, ItemMagazine, LabelTypeMagazine, handleCheckConfig, handleFetchIdModel, ContentInfoJig, ContentInfoJigItem, InfoJigItemIcon, InfoJigItemTitle, senserON, senserOFF } from '.'
-import { FaParachuteBox, FaRetweet, FaPlus} from "react-icons/fa6"; 
+import { BadgeContaint, BadgeItem, BadgeMain, BadgeTitle, ItemChild, ItemMagazine, LabelTypeMagazine, handleCheckConfig, handleFetchIdModel, ContentInfoJig, ContentInfoJigItem, InfoJigItemIcon, InfoJigItemTitle, senserON, senserOFF, ManualMagazine, SegmentedCustom, WorkMagazine, WorkMagazineContent, WorkTitleMagazine, SpanTitleWork, itemsLine, itemsWork, itemsFloor, initialMagazine, TextManual, switchModeAuto } from '.'
+import { FaParachuteBox, FaRetweet, FaPlus, FaFileCirclePlus } from "react-icons/fa6"; 
 import {toast} from "react-toastify"
+import { Select, Button, Space } from 'antd';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-const Badge = ({onHandle, controlAMR, jigVT1, jigVT2}) => {
-    const [listModelId, setListModelId] = useState([])
-    const [stateJig, setStateJig] = useState({line45: false, line46: false})
-    const [stateMagazine, setStateMagazine] = useState({line45: false, line46: false})
+const Badge = ({onHandle, controlAMR, jigVT1, jigVT2, mode, idle, lineAuto}) => {
+    const [stateMagazine, setStateMagazine] = useState("jig")
+    const [data, setData] = useState(initialMagazine)
+    const handleMode = (value)=>{
+        if(idle){
+            if(value.includes("Magazine")){
+                setStateMagazine("magazine")
+                setData({...data,mode: "magazine"})
+                onHandle({line: data.line, mode: "magazine", floor: data.floor, work: data.work})
+            }else if(value.includes("Jig")){
+                setStateMagazine("jig")
+                setData({...data, mode: "jig"})
+                onHandle({line: data.line, mode: "jig", floor: data.floor, work: data.work})
+            }
+            return
+        }
+        toast.warning("Không thể thay đổi công việc - AMR đang chạy")
+    }
+    const handleModeAuto = (value)=>{
+        if(value.includes("45")){
+            switchModeAuto("line45")
+        }else if(value.includes("46")){
+            switchModeAuto("line46")
+        }
+    }
     useEffect(()=>{
-        onHandle("jig", stateJig)
-    },[stateJig.line45, stateJig.line46])
-    useEffect(()=>{
-        onHandle("magazine", stateMagazine)
-    },[stateMagazine.line45, stateMagazine.line46])
-    useEffect(()=>{
-        handleFetchIdModel({path: "magazine_setting", cb1: setListModelId})
-    },[])
+        if(controlAMR?.magazine && !mode){
+            let data = initialMagazine;
+            data.floor = controlAMR.magazine.line45.magazine.floor ? controlAMR.magazine.line45.magazine.floor : controlAMR.magazine.line46.magazine.floor ? controlAMR.magazine.line46.magazine.floor : 1;
+            data.work = controlAMR.magazine.line45.jig ? controlAMR.magazine.line45.jig : controlAMR.magazine.line46.jig ? controlAMR.magazine.line46.jig :
+            controlAMR.magazine.line45.magazine.type ? controlAMR.magazine.line45.magazine.type : controlAMR.magazine.line46.magazine.type ? controlAMR.magazine.line46.magazine.type : "";
+            data.mode = controlAMR.magazine.line45.jig || controlAMR.magazine.line46.jig ?  "jig" :
+            controlAMR.magazine.line45.magazine.type || controlAMR.magazine.line46.magazine.type ? "magazine" : ""
+            data.line = controlAMR.magazine.line45.jig || controlAMR.magazine.line45.magazine.type ? "line 45" : controlAMR.magazine.line46.jig || controlAMR.magazine.line46.magazine.type ? "line 46" : ""
+            setData(data)
+        }
+    },[controlAMR?.magazine, mode])
+    const handleLine = (line)=>{
+        if(idle){
+            setData({...data, line})
+            onHandle({line: line, mode: data.mode, floor: data.floor, work: data.work})
+            return
+        }
+        toast.warning("Không thể thay đổi công việc - AMR đang chạy")
+    }
+    const handleWork = (work)=>{
+        if(idle){
+            setData({...data, work})
+            onHandle({line: data.line, mode: data.mode, floor: data.floor, work: work})
+            return
+        }
+        toast.warning("Không thể thay đổi công việc - AMR đang chạy")
+    }
+    const handleFloor = (floor)=>{
+        if(idle){
+            setData({...data, floor})
+            onHandle({line: data.line, mode: data.mode, floor: floor, work: data.work})
+            return
+        }
+        toast.warning("Không thể thay đổi công việc - AMR đang chạy")
+    }
   return (
     <>
     <BadgeContaint>
-        <BadgeItem >
-            <BadgeTitle><FaPlus style={{paddingRight: 5, color: "green"}}/>Chọn Line Jig</BadgeTitle>
-            <BadgeMain>
-                <LabelTypeMagazine>
-                    <input type="checkbox" name="jigLine45" className="input_magazine" hidden checked={controlAMR.run ? controlAMR.magazine.jig.line45 : stateJig.line45} onChange={(e)=>{setStateJig({...stateJig, line45: e.target.checked})}} disabled={controlAMR.run ? true : false}/>
-                    <ItemMagazine>
-                        <ItemChild>Line 45</ItemChild>
-                        <ItemChild>{controlAMR.run && controlAMR.magazine.jig.line45 ? "Đã chọn" : stateJig.line45 ? "Đã chọn" : "Chưa chọn"}</ItemChild>
-                    </ItemMagazine>
-                </LabelTypeMagazine>
-                <LabelTypeMagazine>
-                    <input type="checkbox" name="jigLine46" className="input_magazine" hidden checked={controlAMR.run ? controlAMR.magazine.jig.line46 : stateJig.line46} onChange={(e)=>{setStateJig({...stateJig, line46: e.target.checked})}} disabled={controlAMR.run ? true : false}/>
-                    <ItemMagazine>
-                        <ItemChild>Line 46</ItemChild>
-                        <ItemChild>{controlAMR.run && controlAMR.magazine.jig.line46 ? "Đã chọn" : stateJig.line46 ? "Đã chọn" : "Chưa chọn"}</ItemChild>
-                    </ItemMagazine>
-                </LabelTypeMagazine>
-            </BadgeMain>
-        </BadgeItem>
-        <BadgeItem >
-            <BadgeTitle><FaPlus style={{paddingRight: 5, color: "green"}}/>Chọn Line Magazine</BadgeTitle>
-            <BadgeMain>
-                <LabelTypeMagazine>
-                    <input type="checkbox" name="magazineLine45" className="input_magazine" checked={controlAMR.run ? controlAMR.magazine.magazine.line45 : stateMagazine.line45} onChange={(e)=>{setStateMagazine({...stateMagazine, line45: e.target.checked})}} hidden/>
-                    <ItemMagazine>
-                        <ItemChild>Line 45</ItemChild>
-                        <ItemChild>{controlAMR.run && controlAMR.magazine.magazine.line45 ? "Đã chọn" : stateMagazine.line45 ? "Đã chọn" : "Chưa chọn"}</ItemChild>
-                    </ItemMagazine>
-                </LabelTypeMagazine>
-                <LabelTypeMagazine>
-                    <input type="checkbox" name="magazineLine46" className="input_magazine" hidden checked={controlAMR.run ? controlAMR.magazine.magazine.line46 : stateMagazine.line46} onChange={(e)=>{setStateMagazine({...stateMagazine, line46: e.target.checked})}}/>
-                    <ItemMagazine>
-                        <ItemChild>Line 46</ItemChild>
-                        <ItemChild>{controlAMR.run && controlAMR.magazine.magazine.line46 ? "Đã chọn" : stateMagazine.line46 ? "Đã chọn" : "Chưa chọn"}</ItemChild>
-                    </ItemMagazine>
-                </LabelTypeMagazine>
-            </BadgeMain>
-        </BadgeItem>
+        <ManualMagazine>
+            <BadgeTitle style={{textAlign: "left", paddingLeft: 20, alignItems: "center"}}><FaFileCirclePlus style={{marginRight: 5}}/>
+                {mode ? `Chọn Line Auto: ${lineAuto.includes("45") ? "Line 45" : "Line 46"}` : "Chọn công việc Manual"}
+            </BadgeTitle>
+            {
+                mode ? 
+                <SegmentedCustom options={["Line 45", "Line 46"]} block className='segmentedCustom' 
+                    defaultValue={"Line 45"} 
+                    onChange={handleModeAuto}
+                    value={lineAuto == "line45" ? "Line 45" : lineAuto == "line46" ? "Line 46" : ""}
+                />
+                :
+                <>
+
+                    <SegmentedCustom options={["Chạy Jig", "Chạy Magazine"]} block className='segmentedCustom' 
+                        defaultValue={"Chạy Jig"} 
+                        onChange={handleMode}
+                        value={data.mode == "magazine" ? "Chạy Magazine" : data.mode == "jig" ? "Chạy Jig" : ""}
+                    />
+                    <WorkMagazine>
+                        <WorkTitleMagazine>
+                            <SpanTitleWork>Line:</SpanTitleWork>
+                            <Select
+                                value={data.line}
+                                style={{
+                                    width: 120,
+                                    height: 35
+                                }}
+                                onChange={handleLine}
+                                options={itemsLine}
+                            />
+                        </WorkTitleMagazine>
+                        <WorkTitleMagazine>
+                            <SpanTitleWork>Công việc:</SpanTitleWork>
+                            <Select
+                                value={data.work}
+                                style={{
+                                    width: 120,
+                                    height: 35
+                                }}
+                                onChange={handleWork}
+                                options={itemsWork}
+                            />
+                        </WorkTitleMagazine>
+                        {
+                            stateMagazine == "magazine" || data.mode == "magazine" ? 
+                            <WorkTitleMagazine>
+                                <SpanTitleWork>Tầng:</SpanTitleWork>
+                                <Select
+                                    value={data.floor}
+                                    style={{
+                                        width: 120,
+                                        height: 35
+                                    }}
+                                    onChange={handleFloor}
+                                    options={itemsFloor}
+                                /> 
+                            </WorkTitleMagazine> : ""
+                        }
+                    </WorkMagazine>
+                </>
+            }
+        </ManualMagazine>
         <BadgeItem >
             <BadgeTitle style={{textAlign: "left", paddingLeft: 20, alignItems: "center"}}><FaRetweet style={{marginRight: 5, color: "darkgreen"}}/>Trạng thái Jig</BadgeTitle>
             <BadgeMain style={{textAlign: "left", paddingLeft: 20, display: "flex", justifyContent: "center"}}>

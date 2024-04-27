@@ -84,3 +84,5 @@ export const arrFieldHeaderStatusBoolean = [
         field: 'emergency',
     }
 ]
+
+export const listArrCheckFinish = ["LM1", "LM11"]

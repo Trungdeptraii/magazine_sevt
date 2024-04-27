@@ -7,8 +7,9 @@ import { string, object } from 'yup';
 import { TitleField } from '../../../../assets/js/globalStyle';
 import { FetchAPI } from '../../../../utils/api';
 import {toast} from "react-toastify"
+import { filterJig } from '../../../../pages/Setting/setting_';
 
-const JigForm = ({hidden, editPoint, title, getData, pathFormJig}) => {
+const JigForm = ({hidden, editPoint, title, getData, pathFormJig, pointUpdateAll}) => {
   const [validate, setValidate] = useState(iniitalValidate)
   const [form, setForm] = useState(editPoint)
   const handleCancelForm = ()=>{
@@ -50,7 +51,7 @@ const JigForm = ({hidden, editPoint, title, getData, pathFormJig}) => {
                 }else if(checkButton == "Update"){
                   let {type, data} = await FetchAPI({method: "GET",host: hostJS, port: portJS, path: `jig_${pathFormJig}`})
                   if(type == "succees"){
-                    let result = data.filter((item)=>item.triggerName.toLowerCase() != editPoint.triggerName)
+                    let result = data.filter((item)=>item.triggerName.toLowerCase() != editPoint.triggerName.toLowerCase())
                     if(result.some((item)=>item.triggerName.toLowerCase() == value.toLowerCase())){
                       return false
                     }
@@ -94,18 +95,18 @@ const JigForm = ({hidden, editPoint, title, getData, pathFormJig}) => {
           })
           try {
             let result = await modelSchema.validate(form, {abortEarly: false})
+            result.openGripper = Number(result.openGripper)
+            result.closeGripper = Number(result.closeGripper)
+            result.openSpace = Number(result.openSpace)
+            result.closeSpace1 = Number(result.closeSpace1)
+            result.closeSpace2 = Number(result.closeSpace2)
+            result.m_delta_x = Number(result.m_delta_x)
+            result.m_delta_y = Number(result.m_delta_y)
+            result.m_delta_h = Number(result.m_delta_h)
+            result.r_delta_x = Number(result.r_delta_x)
+            result.r_delta_y = Number(result.r_delta_y)
+            result.r_delta_h = Number(result.r_delta_h)
             if(checkButton == "Create"){
-                result.openGripper = Number(result.openGripper)
-                result.closeGripper = Number(result.closeGripper)
-                result.openSpace = Number(result.openSpace)
-                result.closeSpace1 = Number(result.closeSpace1)
-                result.closeSpace2 = Number(result.closeSpace2)
-                result.m_delta_x = Number(result.m_delta_x)
-                result.m_delta_y = Number(result.m_delta_y)
-                result.m_delta_h = Number(result.m_delta_h)
-                result.r_delta_x = Number(result.r_delta_x)
-                result.r_delta_y = Number(result.r_delta_y)
-                result.r_delta_h = Number(result.r_delta_h)
                 result.name = result.name.trim()
                 result.triggerName = result.triggerName.trim()
                 result.slugName = result.name.trim().split(" ").join("").toLowerCase();
@@ -113,19 +114,49 @@ const JigForm = ({hidden, editPoint, title, getData, pathFormJig}) => {
                 result.id = createId(5)
                 result.key = result.id + 1
                 result.model = path
-                console.log("result", result);
               }else if(checkButton == "Update"){
                 method= "PATCH",
                 path = path + `/${editPoint.id}`
               }
-              let {type} = await FetchAPI({method, host: hostJS, port: portJS, path, data: result})
+              let {type, data} = await FetchAPI({method, host: hostJS, port: portJS, path, data: result})
               if(type == "succees"){
                 setForm(initialState)
                 toast.success(`Đã ${checkButton == "Create" ? "tạo" : "cập nhật"} thành công ${result.name}`)
-                if(checkButton == "Update"){
-                  hidden()
-                }
+                hidden()
                 getData()
+                if(pointUpdateAll.includes(data.id)){
+                  let dataUpdate = filterJig(data)
+                  try {
+                    let {data} = await FetchAPI({method: "GET", host: hostJS, port: portJS, path: "magazine"})
+                    if(data.length){
+                      let line, type
+                      let result = data[0];
+                      console.log("after", result);
+                      if(pathFormJig == "get_45"){
+                        line = "line45"
+                        type = "load"
+                      }else if(pathFormJig == "return_45"){
+                        line = "line45"
+                        type = "unload"
+                      }else if(pathFormJig == "get_46"){
+                        line = "line46"
+                        type = "load"
+                      }else if(pathFormJig == "return_46"){
+                        line = "line46"
+                        type = "unload"
+                      }
+                      dataUpdate.point = result[line]["jig"][type].point
+                      result[line]["jig"][type] = dataUpdate
+                      let {type: resultType} = await FetchAPI({method: "PATCH", host: hostJS, port: portJS, path: `magazine/amr`, data: result})
+                      if(resultType == "succees"){
+                        toast.success("Cập nhật phần cài đặt thành công !!!")
+                      }
+                    }
+                  } catch (error) {
+                    console.log(error);
+                  }
+                }
+                
               }else if(type == "fail"){
                 toast.warning("Dữ liệu không đúng hãy kiểm tra lại")
               }else if(type == "error"){

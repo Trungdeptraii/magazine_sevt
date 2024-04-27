@@ -85,7 +85,7 @@ export const dataTabs = [
 
 export const filterJig = (data, point="")=>{
     let obj 
-    obj =  _.pick(data, ["triggerName", "openGripper", "closeGripper", "openSpace","m_delta_x", "m_delta_y", "m_delta_h","r_delta_x","r_delta_y","r_delta_h", "name"])
+    obj =  _.pick(data, ["triggerName", "openGripper","closeSpace1","closeSpace2", "closeGripper", "openSpace","m_delta_x", "m_delta_y", "m_delta_h","r_delta_x","r_delta_y","r_delta_h", "name", "point"])
     obj.point = point
     return obj
 }

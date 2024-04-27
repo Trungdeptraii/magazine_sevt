@@ -75,9 +75,7 @@ export const Square = styled.div`
     overflow: hidden;
 `
 export const SquareTitle = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center
 `
 export const fnTaskStatus = (emergency, blocked, taskStatus, errors)=>{
     if(emergency || blocked || taskStatus == 3){
@@ -185,23 +183,23 @@ export const magazineStatus = {
     floor: "",
   },
   1: {
-    line: "46",
-    status: "Unload Magazine",
+    line: "45",
+    // status: "Unload Magazine",
     floor: "1",
   },
   2: {
-    line: "46",
-    status: "Load Magazine",
+    line: "45",
+    // status: "Load Magazine",
     floor: "2",
   },
   3: {
-    line: "45",
-    status: "Unload Magazine",
+    line: "46",
+    // status: "Unload Magazine",
     floor: "1",
   },
   4: {
-    line: "45",
-    status: "Load Magazine",
+    line: "46",
+    // status: "Load Magazine",
     floor: "2",
   }
 }
@@ -311,55 +309,78 @@ export const listRenderCall = [
     status: "Unload Magazine"
   },
 ]
+const listJigStatus = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 export const handleListCall = (data)=>{
   const arrListCallCustoms = [0, 0, 0, 0, 0, 0, 0, 0]
-  //Load Jig Line 45
-  if(data?.Call_LoadJig_L45){
-    arrListCallCustoms[0] = 1
-  }else{
-    arrListCallCustoms[0] = 0
-  }
-  //Load Jig Line 46
-  if(data?.Call_LoadJig_L46){
-    arrListCallCustoms[1] = 1
-  }else{
-    arrListCallCustoms[1] = 0
-  }
-  //Load Magazine Line 45
-  if(data?.Call_Load_Floor1_L45 || data?.Call_Load_Floor2_L45){
-    arrListCallCustoms[2] = 1
-  }else{
-    arrListCallCustoms[2] = 0
-  }
-  //Load Magazine Line 46
-  if(data?.Call_Load_Floor1_L46 || data?.Call_Load_Floor2_L46){
-    arrListCallCustoms[3] = 1
-  }else{
-    arrListCallCustoms[3] = 0
-  }
-  //UnLoad Jig Line 45
-  if(data?.Call_UnLoadJig_L45){
-    arrListCallCustoms[4] = 1
-  }else{
-    arrListCallCustoms[4] = 0
-  }
-  //UnLoad Jig Line 46
-  if(data?.Call_UnLoadJig_L46){
-    arrListCallCustoms[5] = 1
-  }else{
-    arrListCallCustoms[5] = 0
-  }
-  //UnLoad Magazine Line 45
-  if(data?.Call_Unload_Floor1_L45 || data?.Call_Unload_Floor2_L45){
-    arrListCallCustoms[6] = 1
-  }else{
-    arrListCallCustoms[6] = 0
-  }
-  //UNLoad Magazine Line 46
-  if(data?.Call_Unload_Floor1_L46 || data?.Call_Unload_Floor2_L46){
-    arrListCallCustoms[7] = 1
-  }else{
-    arrListCallCustoms[7] = 0
+  try {
+    //Load Jig Line 45
+    if(listJigStatus.includes(data?.Call_LoadJig_L45)){
+      arrListCallCustoms[0] = 1
+    }else{
+      arrListCallCustoms[0] = 0
+    }
+    //Load Jig Line 46
+    if(listJigStatus.includes(data?.Call_LoadJig_L46)){
+      arrListCallCustoms[1] = 1
+    }else{
+      arrListCallCustoms[1] = 0
+    }
+    //Load Magazine Line 45
+    if(listJigStatus.includes(data?.Call_Load_Floor1_L45)|| listJigStatus.includes(data?.Call_Load_Floor2_L45)){
+      arrListCallCustoms[2] = 1
+    }else{
+      arrListCallCustoms[2] = 0
+    }
+    //Load Magazine Line 46
+    if(listJigStatus.includes(data?.Call_Load_Floor1_L46)|| listJigStatus.includes(data?.Call_Load_Floor2_L46)){
+      arrListCallCustoms[3] = 1
+    }else{
+      arrListCallCustoms[3] = 0
+    }
+    //UnLoad Jig Line 45
+    if(listJigStatus.includes(data?.Call_UnLoadJig_L45)){
+      arrListCallCustoms[4] = 1
+    }else{
+      arrListCallCustoms[4] = 0
+    }
+    //UnLoad Jig Line 46
+    if(listJigStatus.includes(data?.Call_UnLoadJig_L46)){
+      arrListCallCustoms[5] = 1
+    }else{
+      arrListCallCustoms[5] = 0
+    }
+    //UnLoad Magazine Line 45
+    if(listJigStatus.includes(data?.Call_Unload_Floor1_L45) || listJigStatus.includes(data?.Call_Unload_Floor2_L45)){
+      arrListCallCustoms[6] = 1
+    }else{
+      arrListCallCustoms[6] = 0
+    }
+    //UNLoad Magazine Line 46
+    if(listJigStatus.includes(data?.Call_Unload_Floor1_L46) || listJigStatus.includes(data?.Call_Unload_Floor2_L46)){
+      arrListCallCustoms[7] = 1
+    }else{
+      arrListCallCustoms[7] = 0
+    }
+  } catch (error) {
+    
   }
   return arrListCallCustoms
 }
+
+export const initDataMagazine = {
+  line45: {
+    jig: "",
+    magazine: {
+      type: "",
+      floor: 0
+    }
+  },
+  line46: {
+    jig: "",
+    magazine: {
+      type: "",
+      floor: 0
+    }
+  }
+}
+

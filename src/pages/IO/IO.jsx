@@ -14,14 +14,18 @@ import 'react-toastify/dist/ReactToastify.css';
 import {useSelector} from "react-redux"
 import ButtonClick from '../../components/Button/ButtonClick'
 
+let DI, DO
 const IO = () => {
-  const {DI, DO} = useSelector((state)=>state.amr.amr)
+  const dataAMR = useSelector((state)=>state.amr.amr)
+  DI = dataAMR.data?.sensors
+  DO = dataAMR.data?.DO
   const [dataIO, setDataIO] = useState({jig: "", magazine: ""})
   const [dataPoint, setDataPoint] = useState([])
   const [pointMove, setPointMove] = useState({name: "", point: ""})
   const [showDrawer, setShowDrawer] = useState(false)
   const handleAddPointMove = (point)=>{
     setPointMove(point)
+    setShowDrawer(false)
   }
   const handleGetPoint = async()=>{
     let {type, data} = await FetchAPI({method: "GET", host: hostJS, port: portJS, path: pathPointJS})
@@ -92,7 +96,7 @@ const IO = () => {
         <IOField>
           <IOContent>
             {
-              DI?.map(({status}, index)=>{
+              DI?.map((status, index)=>{
                 return(
                   <IOItem key={index}>
                     <IOTitle>{DIControl[index]}</IOTitle>

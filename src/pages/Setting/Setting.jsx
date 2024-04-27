@@ -149,7 +149,7 @@ const Setting = () => {
         let magazine_load_46 = FetchAPI({method: "GET", host: hostJS, port: portJS, path: `magazine_load_46/${setting["magazine_load_46"]}`})
         let magazine_unload_46 = FetchAPI({method: "GET", host: hostJS, port: portJS, path: `magazine_unload_46/${setting["magazine_unload_46"]}`})
         let [e, f, g, h] = await Promise.all([jig_get_46, jig_return_46, magazine_load_46, magazine_unload_46])
-        dataGetAll.line46.jig.load = e.type == "succees" && !Array.isArray([e.data]) ? filterJig(e.data, namePoint.jig_get_46.point) : {}
+        dataGetAll.line46.jig.load = e.type == "succees" && !Array.isArray(e.data) ? filterJig(e.data, namePoint.jig_get_46.point) : {}
         dataGetAll.line46.jig.unload = f.type == "succees" && !Array.isArray(f.data) ? filterJig(f.data, namePoint.jig_return_46.point) : {}
         dataGetAll.line46.magazine.load = g.type == "succees" && !Array.isArray(g.data) ? filterMagazine(g.data, namePoint.magazine_load_46.point) : {}
         dataGetAll.line46.magazine.unload = h.type == "succees" && !Array.isArray(h.data) ? filterMagazine(h.data, namePoint.magazine_unload_46.point) : {}

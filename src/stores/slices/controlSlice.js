@@ -11,8 +11,8 @@ const initialState = {
         stop: false,
         goCharge: false,
         goStandBy: false,
-        time: "",
-        magazine: ""
+        magazine: "",
+        modeAuto: "line45"
     }
 }
 
@@ -37,18 +37,10 @@ export const controlSlice = createSlice({
                 console.log("API Stop");
             }else if(action.payload.stop == "resume"){
                 path = pathCancel
-                dataSend.type = "contitue"
+                dataSend.type = "resume"
                 FetchAPI({method: "POST", host: hostServerAPI, port: portServerAPI, path, data: dataSend})
                 message.success(` Đã gửi tín hiệu Tiếp Tục thành công`)
                 console.log("API Resumne");
-            }else if(action.payload.run){
-                if(action.payload.goCharge){
-                    console.log("API goCharge");
-                    message.success(` Đã gửi lệnh di chuyển thành công`)
-                }else if(action.payload.goStandBy){
-                    console.log("API goStandBy");
-                    message.success(` Đã gửi lệnh di chuyển thành công`)
-                }
             }
             state.data = {...initialState.data, ...action.payload}
         }
